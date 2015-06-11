@@ -126,6 +126,8 @@ function RecipeView:LoadRecipes()
 
 					if type(result) == "string" then
 
+						NKPrint("Recipe: " .. result .. "\n")
+
 						local frame = Windows:createWindow("TUGLook/Frame")
 
 						frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
@@ -169,6 +171,8 @@ function RecipeView:LoadRecipes()
 
 						if type(station) == "string" then
 
+							NKPrint("Station: " .. station .. "\n")
+
 							self:SlotHelper(interchangeables, station)
 
 						end
@@ -205,9 +209,13 @@ function RecipeView:LoadRecipes()
 
 					prefix = {}
 
+					prefix[0] = "Crude"
 					prefix[1] = "Crude"
 					prefix[2] = "Crude"
 					prefix[3] = "Bronze"
+					prefix[4] = "Iron"
+
+					NKPrint("Tier: " .. tier .. "\n")
 
 					if tool == "Knife" then
 						tool = prefix[tier] .. " Knife"
@@ -215,9 +223,18 @@ function RecipeView:LoadRecipes()
 						tool = prefix[tier] .. " Hammer"
 					elseif tool == "Axe" then
 						tool = prefix[tier] .. " Axe"
+					elseif tool == "Mallet" then
+						tool = "Wooden Mallet"
+					elseif tool == "Shears" then
+
+						tier = math.max(tier, 3)
+
+						tool = prefix[tier] .. " Shears"
 					end
 
 					if type(tool) == "string" then
+
+						NKPrint("Tool: " .. tool .. "\n")
 
 						local frame = Windows:createWindow("TUGLook/Frame")
 
@@ -270,7 +287,7 @@ function RecipeView:LoadRecipes()
 
 						for component, n in pairs(parts) do
 
-							NKPrint(component .. " hey" .. "\n")
+							NKPrint(component .. " unconsumed" .. "\n")
 
 							if (component == "Crude Rock Head") then
 								component = "Round Rock"
