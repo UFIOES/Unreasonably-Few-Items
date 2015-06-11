@@ -153,6 +153,8 @@ function RecipeView:OnSearchboxExit()
 
 	Eternus.InputSystem:NKRemoveInputContext(self.searchContext)
 
+	self.searching = false
+
 end
 -------------------------------------------------------------------------------
 function RecipeView:LoadRecipes()
