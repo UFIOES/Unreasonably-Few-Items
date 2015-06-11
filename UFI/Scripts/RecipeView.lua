@@ -33,7 +33,7 @@ function RecipeView:PostLoad(layout, controller)
 
 	self.searchContext:NKSetInputPropagation(false)
 
-	self.searchContext:NKRegisterNamedCommand("Return to Menu", self, "OnSearchboxTextAccepted", KEY_ONCE)
+	self.searchContext:NKRegisterNamedCommand("Return to Menu", self, "OnSearchboxExit", KEY_ONCE)
 
 	self.searching = false
 
@@ -57,7 +57,7 @@ function RecipeView:PostLoad(layout, controller)
 
 	self.searchbox:subscribeEvent("Deactivated", function( args )
 		if self.m_active then
-			self:OnSearchboxTextAccepted()
+			self:OnSearchboxExit()
 		end
 	end)
 
@@ -130,8 +130,6 @@ end
 -------------------------------------------------------------------------------
 function RecipeView:OnSearchboxTextAccepted()
 
-	Eternus.InputSystem:NKRemoveInputContext(self.searchContext)
-
 	self.text = self.searchbox:getText()
 
 	if self.text == "" then
@@ -148,6 +146,12 @@ function RecipeView:OnSearchboxTextAccepted()
 	self.recipeScrollpane:addChild(self.recipesList)
 
 	self:LoadRecipes()
+
+end
+-------------------------------------------------------------------------------
+function RecipeView:OnSearchboxExit()
+
+	Eternus.InputSystem:NKRemoveInputContext(self.searchContext)
 
 end
 -------------------------------------------------------------------------------
@@ -179,35 +183,31 @@ function RecipeView:LoadRecipes()
 		local besta = nil
 		local bestb = nil
 
-		for resulta, na in pairs(a["m_results"]) do
+		if self.text then
 
-			if type(resulta) == "string" then
+			for resulta, na in pairs(a["m_results"]) do
 
-				if self.text then
+				if type(resulta) == "string" then
 
 					scorea = string.find(string.lower(resulta), string.lower(self.text))
 
-				end
+					for resultb, nb in pairs(b["m_results"]) do
 
-				for resultb, nb in pairs(b["m_results"]) do
-
-					if type(resultb) == "string" then
-
-						if self.text then
+						if type(resultb) == "string" then
 
 							scoreb = string.find(string.lower(resultb), string.lower(self.text))
 
-						end
-
-						if scorea and scoreb then
-							if scorea == scoreb then
-								return resulta < resultb
+							if scorea and scoreb then
+								if scorea == scoreb then
+									return resulta < resultb
+								end
+								return scorea < scoreb
+							elseif scorea then
+								besta = scorea
+							elseif scoreb then
+								bestb = scoreb
 							end
-							return scorea < scoreb
-						elseif scorea then
-							besta = scorea
-						elseif scoreb then
-							bestb = scoreb
+
 						end
 
 					end
@@ -216,16 +216,35 @@ function RecipeView:LoadRecipes()
 
 			end
 
-		end
-
-		if scorea and scoreb then
-			if (scorea ~= scoreb) then
-				return scorea < scoreb
+			if scorea and scoreb then
+				if (scorea ~= scoreb) then
+					return scorea < scoreb
+				end
+			elseif scorea then
+				return true
+			elseif scoreb then
+				return false
 			end
-		elseif scorea then
-			return true
-		elseif scoreb then
-			return false
+
+		else
+
+			for resulta, na in pairs(a["m_results"]) do
+
+				if type(resulta) == "string" then
+
+					for resultb, nb in pairs(b["m_results"]) do
+
+						if type(resultb) == "string" then
+
+							return resulta < resultb
+
+						end
+
+					end
+
+				end
+
+			end
 		end
 
 		return false
