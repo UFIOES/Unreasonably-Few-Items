@@ -7,7 +7,7 @@ Manifest
 	Description = "Unreasonably Few Items"
 
 	# The major version number.
-	MajorVersion = 1.1
+	MajorVersion = 1.2
 
 	# The minor version number.
 	MinorVersion = 2

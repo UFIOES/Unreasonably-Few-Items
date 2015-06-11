@@ -27,6 +27,39 @@ function RecipeView:PostLoad(layout, controller)
 	self.recipeScrollpane = CEGUI.toScrollablePane(self:GetChild("Recipes"))
 	self.recipeScrollpane:setShowHorzScrollbar(false)
 
+	self.searchbox = CEGUI.toEditbox(self:GetChild("Searchbox"))
+
+	self.searchContext = InputMappingContext.new("Searchbox")
+
+	self.searchContext:NKSetInputPropagation(false)
+
+	self.searchContext:NKRegisterNamedCommand("Return to Menu", self, "OnSearchboxTextAccepted", KEY_ONCE)
+
+	self.searching = false
+
+	self.searchbox:subscribeEvent("MouseClick", function( args )
+		if self.m_active then
+			self:OnSearchboxClicked()
+		end
+	end)
+
+	self.searchbox:subscribeEvent("TextChanged", function( args )
+		if self.m_active then
+			self:OnSearchboxClicked()
+		end
+	end)
+
+	self.searchbox:subscribeEvent("TextAccepted", function( args )
+		if self.m_active then
+			self:OnSearchboxTextAccepted()
+		end
+	end)
+
+	self.searchbox:subscribeEvent("Deactivated", function( args )
+		if self.m_active then
+			self:OnSearchboxTextAccepted()
+		end
+	end)
 
 	self.recipesList = Windows:createWindow("VerticalLayoutContainer")
 
@@ -35,17 +68,6 @@ function RecipeView:PostLoad(layout, controller)
 
 	self.recipeScrollpane:addChild(self.recipesList)
 
-
---[[
-	self.recipeGrid = Windows:createWindow("GridLayoutContainer", "InventorySlots")
-	self.recipeScrollpane:addChild(self.m_inventoryGrid)
-
-	-------
-
-	self.m_inventoryView = CreativeInventoryView.new(self.m_inventoryWindow, self.m_player, self.m_player.m_inventoryContainers[CreativeInventoryManager.Containers.eBackpack])
-
-	-------
-]]
 	self.m_controller = controller
 
 	self.m_controller.m_toggleInventorySignal:Add(function()
@@ -83,7 +105,6 @@ function RecipeView:OnMouseEnterDragContainer( invSlot )
 		self.m_currentWindow = invSlot
 	end
 end
-
 -------------------------------------------------------------------------------
 function RecipeView:OnMouseExitDragContainer( invSlot )
 	-- Disable the selection highlight
@@ -95,289 +116,398 @@ function RecipeView:OnMouseExitDragContainer( invSlot )
 
 end
 -------------------------------------------------------------------------------
+function RecipeView:OnSearchboxClicked()
 
+	if not self.searching then
+
+		Eternus.InputSystem:NKPushInputContext(self.searchContext)
+
+		self.searching = true
+
+	end
+
+end
+-------------------------------------------------------------------------------
+function RecipeView:OnSearchboxTextAccepted()
+
+	Eternus.InputSystem:NKRemoveInputContext(self.searchContext)
+
+	self.text = self.searchbox:getText()
+
+	if self.text == "" then
+		self.text = nil
+	end
+
+	self.recipeScrollpane:destroyChild(self.recipesList)
+
+	self.recipesList = Windows:createWindow("VerticalLayoutContainer")
+
+	self.recipesList:setProperty("DistributeCapturedInputs", "true")
+	self.recipesList:setProperty("MouseInputPropagationEnabled", "true")
+
+	self.recipeScrollpane:addChild(self.recipesList)
+
+	self:LoadRecipes()
+
+end
+-------------------------------------------------------------------------------
 function RecipeView:LoadRecipes()
 	once = true
 	local CSys = Eternus.CraftingSystem
+
+	recipesSorted = {}
+
+	local index = 1
 
 	for i = CSys.m_highestPriority, 0, -1 do
 		if (CSys.m_recipes[i] ~= nil) then
 			for j, recipe in pairs(CSys.m_recipes[i]) do
 
+				recipesSorted[index] = recipe
 
-				local data = Windows:createWindow("HorizontalLayoutContainer")
-
-				data:setProperty("DistributeCapturedInputs", "true")
-				data:setProperty("MouseInputPropagationEnabled", "true")
-
-				data:setSize(CEGUI.USize(CEGUI.UDim(1,0), CEGUI.UDim(1,0)))
-
-				if (once) then
-
-					for k,l in pairs(recipe) do
-						NKPrint(k .. "\n")
-					end
-
-					once = false
-
-				end
-
-				for result, n in pairs(recipe["m_results"]) do
-
-					if type(result) == "string" then
-
-						NKPrint("Recipe: " .. result .. "\n")
-
-						local frame = Windows:createWindow("TUGLook/Frame")
-
-						frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
-
-						frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-						self:SlotHelper(frame, result, n)
-
-						data:addChild(frame)
-
-					end
-
-				end
-
-				local label = Windows:createWindow("TUGLook/Frame")
-
-				label:setSize(CEGUI.USize(CEGUI.UDim(0, 8), CEGUI.UDim(0, 70)))
-
-				label:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-				data:addChild(label)
-
-				if recipe["m_craftingStations"] then
-
-					local interchangeables = Windows:createWindow("HorizontalLayoutContainer")
-
-					interchangeables:setProperty("DistributeCapturedInputs", "true")
-					interchangeables:setProperty("MouseInputPropagationEnabled", "true")
-
-					local num = 0.0
-
-					local frame = Windows:createWindow("TUGLook/Frame")
-
-					for station in pairs(recipe["m_craftingStations"]) do
-
-						num = num + 1
-
-					end
-
-					for station in pairs(recipe["m_craftingStations"]) do
-
-						if type(station) == "string" then
-
-							NKPrint("Station: " .. station .. "\n")
-
-							self:SlotHelper(interchangeables, station)
-
-						end
-
-					end
-
-					frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70 * num), CEGUI.UDim(0, 70)))
-
-					frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-					frame:addChild(interchangeables)
-
-					data:addChild(frame)
-
-					CEGUI.toHorizontalLayoutContainer(interchangeables):layout()
-
-				else
-
-					local invItemContainer = Windows:createWindow("DefaultWindow")
-					invItemContainer:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
-					invItemContainer:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-					data:addChild(invItemContainer)
-
-				end
-
-				if recipe["m_craftingTool"] then
-
-					local frame = Windows:createWindow("TUGLook/Frame")
-
-					tier = recipe["m_craftingTool"]["tier"]
-
-					tool = recipe["m_craftingTool"]["category"]
-
-					prefix = {}
-
-					prefix[0] = "Crude"
-					prefix[1] = "Crude"
-					prefix[2] = "Crude"
-					prefix[3] = "Bronze"
-					prefix[4] = "Iron"
-
-					NKPrint("Tier: " .. tier .. "\n")
-
-					if tool == "Knife" then
-						tool = prefix[tier] .. " Knife"
-					elseif tool == "Hammer" then
-						tool = prefix[tier] .. " Hammer"
-					elseif tool == "Axe" then
-						tool = prefix[tier] .. " Axe"
-					elseif tool == "Mallet" then
-						tool = "Wooden Mallet"
-					elseif tool == "Shears" then
-
-						tier = math.max(tier, 3)
-
-						tool = prefix[tier] .. " Shears"
-					end
-
-					if type(tool) == "string" then
-
-						NKPrint("Tool: " .. tool .. "\n")
-
-						local frame = Windows:createWindow("TUGLook/Frame")
-
-						frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
-
-						frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-						self:SlotHelper(frame, tool)
-
-						data:addChild(frame)
-
-					end
-
-				else
-
-					local invItemContainer = Windows:createWindow("DefaultWindow")
-					invItemContainer:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
-					invItemContainer:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-					data:addChild(invItemContainer)
-
-				end
-
-				local label = Windows:createWindow("TUGLook/Frame")
-
-				label:setSize(CEGUI.USize(CEGUI.UDim(0, 8), CEGUI.UDim(0, 70)))
-
-				label:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-				data:addChild(label)
-
-				if recipe["m_unconsumedComponents"] then
-
-					for category, parts in pairs(recipe["m_unconsumedComponents"]) do
-
-						local interchangeables = Windows:createWindow("HorizontalLayoutContainer")
-
-						interchangeables:setProperty("DistributeCapturedInputs", "true")
-						interchangeables:setProperty("MouseInputPropagationEnabled", "true")
-
-						local num = 0.0
-
-						local frame = Windows:createWindow("TUGLook/Frame")
-
-						for component, n in pairs(parts) do
-
-							num = num + 1
-
-						end
-
-						for component, n in pairs(parts) do
-
-							NKPrint(component .. " unconsumed" .. "\n")
-
-							if (component == "Crude Rock Head") then
-								component = "Round Rock"
-							end
-
-							if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
-
-								self:SlotHelper(interchangeables, component, n)
-
-							end
-
-						end
-
-						frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70 * num), CEGUI.UDim(0, 70)))
-
-						frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-						frame:addChild(interchangeables)
-
-						data:addChild(frame)
-
-						CEGUI.toHorizontalLayoutContainer(interchangeables):layout()
-
-					end
-
-					local label = Windows:createWindow("TUGLook/Frame")
-
-					label:setSize(CEGUI.USize(CEGUI.UDim(0, 8), CEGUI.UDim(0, 70)))
-
-					label:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-					data:addChild(label)
-
-				end
-
-				for category, parts in pairs(recipe["m_components"]) do
-
-					local interchangeables = Windows:createWindow("HorizontalLayoutContainer")
-
-					interchangeables:setProperty("DistributeCapturedInputs", "true")
-					interchangeables:setProperty("MouseInputPropagationEnabled", "true")
-
-					local num = 0.0
-
-					local frame = Windows:createWindow("TUGLook/Frame")
-
-					for component, n in pairs(parts) do
-
-						num = num + 1
-
-					end
-
-					for component, n in pairs(parts) do
-
-						NKPrint(component .. "\n")
-
-						if component == "Long Shaft" then
-							component = "Wood Shaft"
-						elseif component == "Crystal Shard" then
-							component = "Citrine Shard"
-						elseif component == "Spear" then
-							component = "Wood Spear"
-						end
-
-						if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
-
-							self:SlotHelper(interchangeables, component, n)
-
-						end
-
-					end
-
-					frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70 * num), CEGUI.UDim(0, 70)))
-
-					frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-					frame:addChild(interchangeables)
-
-					data:addChild(frame)
-
-					CEGUI.toHorizontalLayoutContainer(interchangeables):layout()
-
-				end
-
-				self.recipesList:addChild(data)
-
-				CEGUI.toHorizontalLayoutContainer(data):layout()
+				index = index + 1
 
 			end
 		end
+	end
+
+	table.sort(recipesSorted, function(a, b)
+
+		local scorea = nil
+		local scoreb = nil
+
+		local besta = nil
+		local bestb = nil
+
+		for resulta, na in pairs(a["m_results"]) do
+
+			if type(resulta) == "string" then
+
+				if self.text then
+
+					scorea = string.find(string.lower(resulta), string.lower(self.text))
+
+				end
+
+				for resultb, nb in pairs(b["m_results"]) do
+
+					if type(resultb) == "string" then
+
+						if self.text then
+
+							scoreb = string.find(string.lower(resultb), string.lower(self.text))
+
+						end
+
+						if scorea and scoreb then
+							if scorea == scoreb then
+								return resulta < resultb
+							end
+							return scorea < scoreb
+						elseif scorea then
+							besta = scorea
+						elseif scoreb then
+							bestb = scoreb
+						end
+
+					end
+
+				end
+
+			end
+
+		end
+
+		if scorea and scoreb then
+			if (scorea ~= scoreb) then
+				return scorea < scoreb
+			end
+		elseif scorea then
+			return true
+		elseif scoreb then
+			return false
+		end
+
+		return false
+
+	end)
+
+	for j, recipe in pairs(recipesSorted) do
+
+		local data = Windows:createWindow("HorizontalLayoutContainer")
+
+		data:setProperty("DistributeCapturedInputs", "true")
+		data:setProperty("MouseInputPropagationEnabled", "true")
+
+		data:setSize(CEGUI.USize(CEGUI.UDim(1,0), CEGUI.UDim(1,0)))
+
+		if (once) then
+
+			for k,l in pairs(recipe) do
+				NKPrint(k .. "\n")
+			end
+
+			once = false
+
+		end
+
+		for result, n in pairs(recipe["m_results"]) do
+
+			if type(result) == "string" then
+
+				--NKPrint("Recipe: " .. result .. "\n")
+
+				local frame = Windows:createWindow("TUGLook/Frame")
+
+				frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
+
+				frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
+
+				self:SlotHelper(frame, result, n)
+
+				data:addChild(frame)
+
+			end
+
+		end
+
+		local label = Windows:createWindow("TUGLook/Frame")
+
+		label:setSize(CEGUI.USize(CEGUI.UDim(0, 8), CEGUI.UDim(0, 70)))
+
+		label:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
+
+		data:addChild(label)
+
+		if recipe["m_craftingStations"] then
+
+			local interchangeables = Windows:createWindow("HorizontalLayoutContainer")
+
+			interchangeables:setProperty("DistributeCapturedInputs", "true")
+			interchangeables:setProperty("MouseInputPropagationEnabled", "true")
+
+			local num = 0.0
+
+			local frame = Windows:createWindow("TUGLook/Frame")
+
+			for station in pairs(recipe["m_craftingStations"]) do
+
+				num = num + 1
+
+			end
+
+			for station in pairs(recipe["m_craftingStations"]) do
+
+				if type(station) == "string" then
+
+					--NKPrint("Station: " .. station .. "\n")
+
+					self:SlotHelper(interchangeables, station)
+
+				end
+
+			end
+
+			frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70 * num), CEGUI.UDim(0, 70)))
+
+			frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
+
+			frame:addChild(interchangeables)
+
+			data:addChild(frame)
+
+			CEGUI.toHorizontalLayoutContainer(interchangeables):layout()
+
+		else
+
+			local invItemContainer = Windows:createWindow("DefaultWindow")
+			invItemContainer:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
+			invItemContainer:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
+
+			data:addChild(invItemContainer)
+
+		end
+
+		if recipe["m_craftingTool"] then
+
+			local frame = Windows:createWindow("TUGLook/Frame")
+
+			tier = recipe["m_craftingTool"]["tier"]
+
+			tool = recipe["m_craftingTool"]["category"]
+
+			prefix = {}
+
+			prefix[0] = "Crude"
+			prefix[1] = "Crude"
+			prefix[2] = "Crude"
+			prefix[3] = "Bronze"
+			prefix[4] = "Iron"
+
+			--NKPrint("Tier: " .. tier .. "\n")
+
+			if tool == "Knife" then
+				tool = prefix[tier] .. " Knife"
+			elseif tool == "Hammer" then
+				tool = prefix[tier] .. " Hammer"
+			elseif tool == "Axe" then
+				tool = prefix[tier] .. " Axe"
+			elseif tool == "Mallet" then
+				tier = math.max(tier, 3)
+				tool = "Wooden Mallet"
+			elseif tool == "Shears" then
+				tier = math.max(tier, 3)
+				tool = prefix[tier] .. " Shears"
+			end
+
+			if type(tool) == "string" then
+
+				--NKPrint("Tool: " .. tool .. "\n")
+
+				local frame = Windows:createWindow("TUGLook/Frame")
+
+				frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
+
+				frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
+
+				self:SlotHelper(frame, tool)
+
+				data:addChild(frame)
+
+			end
+
+		else
+
+			local invItemContainer = Windows:createWindow("DefaultWindow")
+			invItemContainer:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
+			invItemContainer:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
+
+			data:addChild(invItemContainer)
+
+		end
+
+		local label = Windows:createWindow("TUGLook/Frame")
+
+		label:setSize(CEGUI.USize(CEGUI.UDim(0, 8), CEGUI.UDim(0, 70)))
+
+		label:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
+
+		data:addChild(label)
+
+		if recipe["m_unconsumedComponents"] then
+
+			for category, parts in pairs(recipe["m_unconsumedComponents"]) do
+
+				local interchangeables = Windows:createWindow("HorizontalLayoutContainer")
+
+				interchangeables:setProperty("DistributeCapturedInputs", "true")
+				interchangeables:setProperty("MouseInputPropagationEnabled", "true")
+
+				local num = 0.0
+
+				local frame = Windows:createWindow("TUGLook/Frame")
+
+				for component, n in pairs(parts) do
+
+					num = num + 1
+
+				end
+
+				for component, n in pairs(parts) do
+
+					--NKPrint(component .. " unconsumed" .. "\n")
+
+					if component == "Crude Rock Head" then
+						component = "Round Rock"
+					end
+
+					if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
+
+						self:SlotHelper(interchangeables, component, n)
+
+					end
+
+				end
+
+				frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70 * num), CEGUI.UDim(0, 70)))
+
+				frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
+
+				frame:addChild(interchangeables)
+
+				data:addChild(frame)
+
+				CEGUI.toHorizontalLayoutContainer(interchangeables):layout()
+
+			end
+
+			local label = Windows:createWindow("TUGLook/Frame")
+
+			label:setSize(CEGUI.USize(CEGUI.UDim(0, 8), CEGUI.UDim(0, 70)))
+
+			label:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
+
+			data:addChild(label)
+
+		end
+
+		if (recipe["m_components"]) then
+
+			for category, parts in pairs(recipe["m_components"]) do
+
+				local interchangeables = Windows:createWindow("HorizontalLayoutContainer")
+
+				interchangeables:setProperty("DistributeCapturedInputs", "true")
+				interchangeables:setProperty("MouseInputPropagationEnabled", "true")
+
+				local num = 0.0
+
+				local frame = Windows:createWindow("TUGLook/Frame")
+
+				for component, n in pairs(parts) do
+
+					num = num + 1
+
+				end
+
+				for component, n in pairs(parts) do
+
+					--NKPrint(component .. "\n")
+
+					if component == "Long Shaft" then
+						component = "Wood Shaft"
+					elseif component == "Crystal Shard" then
+						component = "Citrine Shard"
+					elseif component == "Spear" then
+						component = "Wood Spear"
+					end
+
+					if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
+
+						self:SlotHelper(interchangeables, component, n)
+
+					end
+
+				end
+
+				frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70 * num), CEGUI.UDim(0, 70)))
+
+				frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
+
+				frame:addChild(interchangeables)
+
+				data:addChild(frame)
+
+				CEGUI.toHorizontalLayoutContainer(interchangeables):layout()
+
+			end
+
+		end
+
+		self.recipesList:addChild(data)
+
+		CEGUI.toHorizontalLayoutContainer(data):layout()
+
 	end
 
 	CEGUI.toVerticalLayoutContainer(self.recipesList):layout()

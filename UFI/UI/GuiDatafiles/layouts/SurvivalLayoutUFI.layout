@@ -204,8 +204,8 @@
                 <Property name="FrameEnabled" value="false" />
                 <Property name="HorzFormatting" value="WordWrapCentreAligned" />
                 <Property name="BackgroundEnabled" value="false" />
-                <Property name="HorzScrollPageSize" value="480" />
-                <Property name="VertScrollPageSize" value="54" />
+                <Property name="HorzScrollPageSize" value="320" />
+                <Property name="VertScrollPageSize" value="36" />
                 <Property name="MousePassThroughEnabled" value="true" />
             </Window>
         </Window>
@@ -2666,11 +2666,11 @@
             </Window>
         </Window>
         <Window type="TUGLook/StaticImage" name="RecipeView" >
-            <Property name="Area" value="{{0,0},{0,0},{0.5,200},{0.5,-200}}" />
+            <Property name="Area" value="{{0,0},{0,0},{0.5,200},{0.5,-168}}" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="FrameEnabled" value="false" />
             <Window type="TUGLook/ScrollablePane" name="Recipes" >
-                <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+                <Property name="Area" value="{{0,0},{0,32},{1,0},{1,0}}" />
                 <Property name="ForceVertScrollbar" value="true" />
                 <AutoWindow namePath="__auto_container__" >
                     <Property name="MouseInputPropagationEnabled" value="true" />
@@ -2681,6 +2681,10 @@
                 <AutoWindow namePath="__auto_vscrollbar__" >
                     <Property name="AlwaysOnTop" value="true" />
                 </AutoWindow>
+            </Window>
+            <Window type="TUGLook/Editbox" name="Searchbox" >
+                <Property name="Area" value="{{0,0},{0,0},{1,0},{0,32}}" />
+                <Property name="MaxTextLength" value="50" />
             </Window>
         </Window>
     </Window>
