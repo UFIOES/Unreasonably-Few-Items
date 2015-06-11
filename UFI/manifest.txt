@@ -7,10 +7,10 @@ Manifest
 	Description = "Unreasonably Few Items"
 
 	# The major version number.
-	MajorVersion = 1.0
+	MajorVersion = 1.1
 
 	# The minor version number.
-	MinorVersion = 1
+	MinorVersion = 2
 
 	# The file path to the script that is the entry point.
 	ScriptFile = "Scripts/UFI.lua"
