@@ -45,13 +45,7 @@ function RecipeView:PostLoad(layout, controller)
 
 	self.searchbox:subscribeEvent("TextChanged", function( args )
 		if self.m_active then
-			self:OnSearchboxClicked()
-		end
-	end)
-
-	self.searchbox:subscribeEvent("TextAccepted", function( args )
-		if self.m_active then
-			self:OnSearchboxTextAccepted()
+			self:OnTextChanged()
 		end
 	end)
 
@@ -116,19 +110,7 @@ function RecipeView:OnMouseExitDragContainer( invSlot )
 
 end
 -------------------------------------------------------------------------------
-function RecipeView:OnSearchboxClicked()
-
-	if not self.searching then
-
-		Eternus.InputSystem:NKPushInputContext(self.searchContext)
-
-		self.searching = true
-
-	end
-
-end
--------------------------------------------------------------------------------
-function RecipeView:OnSearchboxTextAccepted()
+function RecipeView:OnTextChanged()
 
 	self.text = self.searchbox:getText()
 
@@ -146,6 +128,18 @@ function RecipeView:OnSearchboxTextAccepted()
 	self.recipeScrollpane:addChild(self.recipesList)
 
 	self:LoadRecipes()
+
+end
+-------------------------------------------------------------------------------
+function RecipeView:OnSearchboxClicked()
+
+	if not self.searching then
+
+		Eternus.InputSystem:NKPushInputContext(self.searchContext)
+
+		self.searching = true
+
+	end
 
 end
 -------------------------------------------------------------------------------
@@ -169,66 +163,35 @@ function RecipeView:LoadRecipes()
 		if (CSys.m_recipes[i] ~= nil) then
 			for j, recipe in pairs(CSys.m_recipes[i]) do
 
-				recipesSorted[index] = recipe
+				if self.text then
 
-				index = index + 1
+					for result, n in pairs(recipe["m_results"]) do
 
-			end
-		end
-	end
+						if type(result) == "string" and string.find(string.lower(result), string.lower(self.text)) then
 
-	table.sort(recipesSorted, function(a, b)
+							recipesSorted[index] = recipe
 
-		local scorea = nil
-		local scoreb = nil
-
-		local besta = nil
-		local bestb = nil
-
-		if self.text then
-
-			for resulta, na in pairs(a["m_results"]) do
-
-				if type(resulta) == "string" then
-
-					scorea = string.find(string.lower(resulta), string.lower(self.text))
-
-					for resultb, nb in pairs(b["m_results"]) do
-
-						if type(resultb) == "string" then
-
-							scoreb = string.find(string.lower(resultb), string.lower(self.text))
-
-							if scorea and scoreb then
-								if scorea == scoreb then
-									return resulta < resultb
-								end
-								return scorea < scoreb
-							elseif scorea then
-								besta = scorea
-							elseif scoreb then
-								bestb = scoreb
-							end
+							index = index + 1
 
 						end
 
 					end
 
+				else
+
+					recipesSorted[index] = recipe
+
+					index = index + 1
+
 				end
 
 			end
+		end
+	end
 
-			if scorea and scoreb then
-				if (scorea ~= scoreb) then
-					return scorea < scoreb
-				end
-			elseif scorea then
-				return true
-			elseif scoreb then
-				return false
-			end
+	if not self.text then
 
-		else
+		table.sort(recipesSorted, function(a, b)
 
 			for resulta, na in pairs(a["m_results"]) do
 
@@ -247,11 +210,12 @@ function RecipeView:LoadRecipes()
 				end
 
 			end
-		end
 
-		return false
+			return false
 
-	end)
+		end)
+
+	end
 
 	for j, recipe in pairs(recipesSorted) do
 
@@ -276,7 +240,7 @@ function RecipeView:LoadRecipes()
 
 			if type(result) == "string" then
 
-				--NKPrint("Recipe: " .. result .. "\n")
+				NKPrint("Recipe: " .. result .. "\n")
 
 				local frame = Windows:createWindow("TUGLook/Frame")
 
@@ -321,7 +285,7 @@ function RecipeView:LoadRecipes()
 
 				if type(station) == "string" then
 
-					--NKPrint("Station: " .. station .. "\n")
+					NKPrint("Station: " .. station .. "\n")
 
 					self:SlotHelper(interchangeables, station)
 
@@ -383,7 +347,7 @@ function RecipeView:LoadRecipes()
 
 			if type(tool) == "string" then
 
-				--NKPrint("Tool: " .. tool .. "\n")
+				NKPrint("Tool: " .. tool .. "\n")
 
 				local frame = Windows:createWindow("TUGLook/Frame")
 
@@ -436,7 +400,7 @@ function RecipeView:LoadRecipes()
 
 				for component, n in pairs(parts) do
 
-					--NKPrint(component .. " unconsumed" .. "\n")
+					NKPrint(component .. " unconsumed" .. "\n")
 
 					if component == "Crude Rock Head" then
 						component = "Round Rock"
@@ -481,31 +445,93 @@ function RecipeView:LoadRecipes()
 				interchangeables:setProperty("DistributeCapturedInputs", "true")
 				interchangeables:setProperty("MouseInputPropagationEnabled", "true")
 
-				local num = 0.0
+				local num = 0
 
 				local frame = Windows:createWindow("TUGLook/Frame")
 
-				for component, n in pairs(parts) do
+				if recipe:InstanceOf(ModularRecipe) then
 
-					num = num + 1
+					num = 1
 
-				end
-
-				for component, n in pairs(parts) do
-
-					--NKPrint(component .. "\n")
+					local component = parts["default"]
 
 					if component == "Long Shaft" then
 						component = "Wood Shaft"
+						NKPrint(" -> " .. component)
 					elseif component == "Crystal Shard" then
 						component = "Citrine Shard"
+						NKPrint(" -> " .. component)
 					elseif component == "Spear" then
 						component = "Wood Spear"
+						NKPrint(" -> " .. component)
+					elseif component == "Wood Log" then
+						component = "Wood Log Pine"
+						NKPrint(" -> " .. component)
+					elseif component == "Dark Green Clump" then
+						component = "Dark Green Grass Clump"
+						NKPrint(" -> " .. component)
+					elseif component == "Light Green Clump" then
+						component = "Light Green Grass Clump"
+						NKPrint(" -> " .. component)
+					elseif component == "Tan Clump" then
+						component = "Tan Grass Clump"
+						NKPrint(" -> " .. component)
+					elseif component == "Sat Green Clump" then --??? no such grass?
+						component = "Light Green Grass Clump"
+						NKPrint(" -> " .. component)
+					else
+						NKPrint(component .. "\n")
 					end
 
 					if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
 
 						self:SlotHelper(interchangeables, component, n)
+
+					end
+
+				else
+
+					for component, n in pairs(parts) do
+
+						num = num + 1
+
+					end
+
+					for component, n in pairs(parts) do
+
+						if component == "Long Shaft" then
+							component = "Wood Shaft"
+							NKPrint(" -> " .. component)
+						elseif component == "Crystal Shard" then
+							component = "Citrine Shard"
+							NKPrint(" -> " .. component)
+						elseif component == "Spear" then
+							component = "Wood Spear"
+							NKPrint(" -> " .. component)
+						elseif component == "Wood Log" then
+							component = "Wood Log Pine"
+							NKPrint(" -> " .. component)
+						elseif component == "Dark Green Clump" then
+							component = "Dark Green Grass Clump"
+							NKPrint(" -> " .. component)
+						elseif component == "Light Green Clump" then
+							component = "Light Green Grass Clump"
+							NKPrint(" -> " .. component)
+						elseif component == "Tan Clump" then
+							component = "Tan Grass Clump"
+							NKPrint(" -> " .. component)
+						elseif component == "Sat Green Clump" then --??? no such grass?
+							component = "Light Green Grass Clump"
+							NKPrint(" -> " .. component)
+						else
+							NKPrint(component .. "\n")
+						end
+
+						if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
+
+							self:SlotHelper(interchangeables, component, n)
+
+						end
 
 					end
 
