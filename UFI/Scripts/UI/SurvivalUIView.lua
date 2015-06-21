@@ -293,6 +293,8 @@ function SurvivalUIView:ToggleInventory( show )
 	else
 		self.m_playerBackpack:hide()
 
+		self.m_containerViews["RecipeView"]:OnInventoryExited()
+
 		self.m_containerViews["RecipeView"]:Hide()
 
 	end

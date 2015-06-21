@@ -1,6 +1,4 @@
 
-include("Scripts/Core/Common.lua")
-
 -------------------------------------------------------------------------------
 if UFI == nil then
 	UFI = EternusEngine.ModScriptClass.Subclass("UFI")

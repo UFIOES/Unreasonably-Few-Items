@@ -1,4 +1,4 @@
-include("Scripts/Core/Common.lua")
+
 include("Scripts/UI/View.lua")
 --include("Scripts/RecipeItemView.lua")
 
@@ -37,19 +37,25 @@ function RecipeView:PostLoad(layout, controller)
 
 	self.searching = false
 
-	self.searchbox:subscribeEvent("MouseClick", function( args )
+	self.searchbox:subscribeEvent("MouseClick", function(args)
 		if self.m_active then
 			self:OnSearchboxClicked()
 		end
 	end)
 
-	self.searchbox:subscribeEvent("TextChanged", function( args )
+	self.searchbox:subscribeEvent("TextChanged", function(args)
 		if self.m_active then
 			self:OnTextChanged()
 		end
 	end)
 
-	self.searchbox:subscribeEvent("Deactivated", function( args )
+	self.searchbox:subscribeEvent("Deactivated", function(args)
+		if self.m_active then
+			self:OnSearchboxDeactivated()
+		end
+	end)
+
+	self.searchbox:subscribeEvent("TextAccepted", function(args)
 		if self.m_active then
 			self:OnSearchboxExit()
 		end
@@ -91,7 +97,16 @@ end
 	self.m_energyCost 				= args.energyCost or DefaultRecipe.DefaultEnergyCost
 ]]
 -------------------------------------------------------------------------------
-function RecipeView:OnMouseEnterDragContainer( invSlot )
+function RecipeView:OnInventoryExited()
+	-- Disable the selection highlight
+	if self.m_currentWindow then
+		self.m_currentWindow:setProperty("HighlightImageColours", RecipeView.ALPHA_INVISIBLE)
+		self.m_tooltip:hide()
+		self.m_currentWindow = nil
+	end
+end
+-------------------------------------------------------------------------------
+function RecipeView:OnMouseEnterDragContainer(invSlot)
 	-- Enable the selection highlight
 	if invSlot then
 		invSlot:setProperty("HighlightImageColours", RecipeView.ALPHA_VISIBLE)
@@ -100,7 +115,7 @@ function RecipeView:OnMouseEnterDragContainer( invSlot )
 	end
 end
 -------------------------------------------------------------------------------
-function RecipeView:OnMouseExitDragContainer( invSlot )
+function RecipeView:OnMouseExitDragContainer(invSlot)
 	-- Disable the selection highlight
 	if invSlot then
 		invSlot:setProperty("HighlightImageColours", RecipeView.ALPHA_INVISIBLE)
@@ -144,6 +159,14 @@ function RecipeView:OnSearchboxClicked()
 end
 -------------------------------------------------------------------------------
 function RecipeView:OnSearchboxExit()
+
+	self.searchbox:deactivate()
+
+	--self:OnSearchboxDeactivated()
+
+end
+-------------------------------------------------------------------------------
+function RecipeView:OnSearchboxDeactivated()
 
 	Eternus.InputSystem:NKRemoveInputContext(self.searchContext)
 
