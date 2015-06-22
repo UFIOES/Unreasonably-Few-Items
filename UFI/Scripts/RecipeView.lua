@@ -5,6 +5,9 @@ include("Scripts/UI/View.lua")
 local Windows = nil
 local UISystem = nil
 
+-- get an Schematic with invalid name
+local nullSchematic = Eternus.GameObjectSystem:NKFindObjectSchematicByName("_NULL_null_000")
+
 if Eternus.IsClient then -- These are not used in a dedicated server environment
 	Windows	= EternusEngine.UI.Windows
 	UISystem = EternusEngine.UI.System
@@ -597,7 +600,7 @@ function RecipeView:SlotHelper(parent, item, n)
 
 	itemSchematic = Eternus.GameObjectSystem:NKFindObjectSchematicByName(item)
 
-	if itemSchematic and itemSchematic:NKGetIconName() then
+	if itemSchematic and itemSchematic~=nullSchematic and itemSchematic:NKGetIconName() then
 		invSlot:setProperty("ItemImage", "TUGIcons/" .. itemSchematic:NKGetIconName())
 	else
 		invSlot:setProperty("ItemImage", "TUGIcons/NoIcon")

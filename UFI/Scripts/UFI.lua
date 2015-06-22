@@ -1,4 +1,6 @@
 
+include("Scripts/UI/UFIView.lua")
+
 -------------------------------------------------------------------------------
 if UFI == nil then
 	UFI = EternusEngine.ModScriptClass.Subclass("UFI")
@@ -29,6 +31,15 @@ end
 -------------------------------------------------------------------------------
 -- Called from C++ every update tick
 function UFI:Process(dt)
+end
+
+-------------------------------------------------------------------------------
+function UFI:LocalPlayerReady(player)
+	self.m_UFIView = UFIView.new("SurvivalLayoutUFI.layout", player)
+	
+	player.m_toggleInventorySignal:Add(function(show)
+		self.m_UFIView:ToggleInventory(show)
+	end)
 end
 
 
