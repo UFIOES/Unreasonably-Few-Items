@@ -20,7 +20,8 @@ end
 -------------------------------------------------------------------------------
 -- Called from C++ when the current game enters
 function UFI:Enter()
-	self.UFIView.m_player.m_defaultInputContext:NKRegisterDirectCommand("R", self.UFIView, "ShowInterface", KEY_ONCE)
+	self.UFIView.m_player.m_defaultInputContext:NKRegisterNamedCommand("Toggle Recipe Interface", self.UFIView, "ShowInterface", KEY_ONCE)
+
 end
 
 -------------------------------------------------------------------------------

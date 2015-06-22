@@ -1,0 +1,7 @@
+UFI Keybinds
+	{
+		UFI
+		{
+			R = "Toggle Recipe Interface"
+		}
+	}

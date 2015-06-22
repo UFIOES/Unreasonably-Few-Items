@@ -36,7 +36,7 @@ function RecipeView:PostLoad(layout, controller)
 
 	self.recipeContext:NKRegisterNamedCommand("Return to Menu", self, "ToggleInterface", KEY_ONCE)
 
-	self.recipeContext:NKRegisterDirectCommand("R", self, "ToggleInterface", KEY_ONCE)
+	self.recipeContext:NKRegisterNamedCommand("Toggle Recipe Interface", self, "ToggleInterface", KEY_ONCE)
 
 	self.searchbox = CEGUI.toEditbox(self:GetChild("Searchbox"))
 
