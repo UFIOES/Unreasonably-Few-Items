@@ -8,13 +8,11 @@ e.g.
 
 Mods
 {
-	"Mods/SteamPower"
 	"Mods/UFI"
 	"Game/Dev"
 	"Game/Survival"
 	"Game/Creative"
 	"Game/Core"
-	"Mods/CommonLib"
 }
 
 I would like to thank:

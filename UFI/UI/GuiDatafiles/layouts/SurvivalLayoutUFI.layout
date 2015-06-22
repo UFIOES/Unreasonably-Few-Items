@@ -9,7 +9,7 @@
         <Property name="DistributeCapturedInputs" value="true" />
         <Property name="MouseInputPropagationEnabled" value="true" />
         <Window type="TUGLook/StaticImage" name="RecipeView" >
-            <Property name="Area" value="{{0,0},{0,0},{0.5,200},{0.5,-168}}" />
+            <Property name="Area" value="{{0,20},{0,20},{1,-20},{0.825,-20}}" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="FrameEnabled" value="false" />
             <Window type="TUGLook/ScrollablePane" name="Recipes" >
@@ -23,11 +23,31 @@
                 </AutoWindow>
                 <AutoWindow namePath="__auto_vscrollbar__" >
                     <Property name="AlwaysOnTop" value="true" />
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="HoverImage" value="TUGLook/MiniVertScrollDownHover" />
+                        <Property name="NormalImage" value="TUGLook/MiniVertScrollDownNormal" />
+                        <Property name="PushedImage" value="TUGLook/MiniVertScrollDownNormal" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="HoverImage" value="TUGLook/MiniVertScrollUpHover" />
+                        <Property name="NormalImage" value="TUGLook/MiniVertScrollUpNormal" />
+                        <Property name="PushedImage" value="TUGLook/MiniVertScrollUpNormal" />
+                    </AutoWindow>
                 </AutoWindow>
             </Window>
             <Window type="TUGLook/Editbox" name="Searchbox" >
-                <Property name="Area" value="{{0,0},{0,0},{1,0},{0,32}}" />
+                <Property name="Area" value="{{0,0},{0,1},{1,-128},{0,33}}" />
                 <Property name="MaxTextLength" value="50" />
+            </Window>
+            <Window type="TUGLook/Checkbox" name="CheatMode" >
+                <Property name="Area" value="{{1,-32},{0,0},{1,0},{0,32}}" />
+                <Property name="TooltipText" value="Cheat Mode" />
+            </Window>
+            <Window type="TUGLook/Label" name="CheatModeLabel" >
+                <Property name="Area" value="{{1,-128},{0,0},{1,-32},{0,32}}" />
+                <Property name="Font" value="DevinneSwash-8" />
+                <Property name="Text" value="Cheat Mode:" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
             </Window>
         </Window>
     </Window>

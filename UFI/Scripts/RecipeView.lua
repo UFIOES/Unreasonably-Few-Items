@@ -30,6 +30,14 @@ function RecipeView:PostLoad(layout, controller)
 	self.recipeScrollpane = CEGUI.toScrollablePane(self:GetChild("Recipes"))
 	self.recipeScrollpane:setShowHorzScrollbar(false)
 
+	self.recipeContext = InputMappingContext.new("Recipies")
+
+	self.recipeContext:NKSetInputPropagation(false)
+
+	self.recipeContext:NKRegisterNamedCommand("Return to Menu", self, "ToggleInterface", KEY_ONCE)
+
+	self.recipeContext:NKRegisterDirectCommand("R", self, "ToggleInterface", KEY_ONCE)
+
 	self.searchbox = CEGUI.toEditbox(self:GetChild("Searchbox"))
 
 	self.searchContext = InputMappingContext.new("Searchbox")
@@ -38,7 +46,19 @@ function RecipeView:PostLoad(layout, controller)
 
 	self.searchContext:NKRegisterNamedCommand("Return to Menu", self, "OnSearchboxExit", KEY_ONCE)
 
+	self.cheatModeButton = CEGUI.toToggleButton(self:GetChild("CheatMode"))
+
+	--self.cheatModeLabel = CEGUI.toLabel(self:GetChild("CheatModeLabel"))
+
+	self.cheatMode = false
+
 	self.searching = false
+
+	self.cheatModeButton:subscribeEvent("SelectStateChanged", function(args)
+		if self.m_active then
+			self.cheatMode = not self.cheatMode
+		end
+	end)
 
 	self.searchbox:subscribeEvent("MouseClick", function(args)
 		if self.m_active then
@@ -73,9 +93,7 @@ function RecipeView:PostLoad(layout, controller)
 
 	self.m_controller = controller
 
-	self.m_controller.m_toggleInventorySignal:Add(function()
-		self.m_active = not self.m_active
-	end)
+	self.layout = layout
 
 	self.m_tooltip = CEGUI.toTooltip(Windows:createWindow("TUGLook/Tooltip"))
 	self.m_active = false
@@ -100,13 +118,131 @@ end
 	self.m_energyCost 				= args.energyCost or DefaultRecipe.DefaultEnergyCost
 ]]
 -------------------------------------------------------------------------------
-function RecipeView:OnInventoryExited()
-	-- Disable the selection highlight
-	if self.m_currentWindow then
-		self.m_currentWindow:setProperty("HighlightImageColours", RecipeView.ALPHA_INVISIBLE)
-		self.m_tooltip:hide()
-		self.m_currentWindow = nil
+function RecipeView:SpawnComponents(recipe)
+
+	if (recipe["m_components"]) then
+
+		for category, parts in pairs(recipe["m_components"]) do
+
+			if recipe:InstanceOf(ModularRecipe) then
+
+				local component = parts["default"]
+
+				if component == "Long Shaft" then
+					component = "Wood Shaft"
+				elseif component == "Crystal Shard" then
+					component = "Citrine Shard"
+				elseif component == "Spear" then
+					component = "Wood Spear"
+				elseif component == "Wood Log" then
+					component = "Wood Log Pine"
+				elseif component == "Dark Green Clump" then
+					component = "Dark Green Grass Clump"
+				elseif component == "Light Green Clump" then
+					component = "Light Green Grass Clump"
+				elseif component == "Tan Clump" then
+					component = "Tan Grass Clump"
+				elseif component == "Sat Green Clump" then --??? no such grass?
+					component = "Light Green Grass Clump"
+				end
+
+				if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
+
+					self:spawnItem(component, n)
+
+				end
+
+			else
+
+				for component, n in pairs(parts) do
+
+					if component == "Long Shaft" then
+						component = "Wood Shaft"
+					elseif component == "Crystal Shard" then
+						component = "Citrine Shard"
+					elseif component == "Spear" then
+						component = "Wood Spear"
+					elseif component == "Wood Log" then
+						component = "Wood Log Pine"
+					elseif component == "Dark Green Clump" then
+						component = "Dark Green Grass Clump"
+					elseif component == "Light Green Clump" then
+						component = "Light Green Grass Clump"
+					elseif component == "Tan Clump" then
+						component = "Tan Grass Clump"
+					elseif component == "Sat Green Clump" then --??? no such grass?
+						component = "Light Green Grass Clump"
+					end
+
+					if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
+
+						self:spawnItem(component, n)
+
+						break
+
+					end
+
+				end
+
+			end
+
+		end
+
 	end
+
+end
+-------------------------------------------------------------------------------
+function RecipeView:spawnItem(name, count)
+
+	local spawnLocation = Eternus.GameState.m_activeCamera:NKGetLocation() + (Eternus.GameState.m_activeCamera:ForwardVector():mul_scalar(3.0))
+
+	-- Forward the command to player
+	self.m_controller:SpawnCommand(name, count, spawnLocation)
+
+	Eternus.CommandService:NKAddLocalText("Attempting to spawn " .. tostring(count) .. " of object " .. name .. "\n")
+
+end
+-------------------------------------------------------------------------------
+function RecipeView:ToggleInterface()
+
+	self:setVisible(false)
+	self.layout:setVisible(false)
+
+end
+-------------------------------------------------------------------------------
+function RecipeView:setVisible(show)
+
+	self.m_active = show
+
+	if show then
+
+		Eternus.InputSystem:NKPushInputContext(self.recipeContext)
+
+		self.m_controller.m_gameModeUI.m_crosshair:hide()
+
+		Eternus.InputSystem:NKShowMouse()
+		Eternus.InputSystem:NKCenterMouse()
+
+		self.m_controller.m_inventoryToggleable = false
+
+	else
+
+		if self.m_currentWindow then
+			self.m_currentWindow:setProperty("HighlightImageColours", RecipeView.ALPHA_INVISIBLE)
+			self.m_tooltip:hide()
+			self.m_currentWindow = nil
+		end
+
+		Eternus.InputSystem:NKRemoveInputContext(self.recipeContext)
+
+		self.m_controller.m_gameModeUI.m_crosshair:show()
+
+		Eternus.InputSystem:NKHideMouse()
+
+		self.m_controller.m_inventoryToggleable = true
+
+	end
+
 end
 -------------------------------------------------------------------------------
 function RecipeView:OnMouseEnterDragContainer(invSlot)
@@ -252,6 +388,7 @@ function RecipeView:LoadRecipes()
 
 		data:setSize(CEGUI.USize(CEGUI.UDim(1,0), CEGUI.UDim(1,0)))
 
+		--[[
 		if (once) then
 
 			for k,l in pairs(recipe) do
@@ -261,12 +398,13 @@ function RecipeView:LoadRecipes()
 			once = false
 
 		end
+		]]
 
 		for result, n in pairs(recipe["m_results"]) do
 
 			if type(result) == "string" then
 
-				NKPrint("Recipe: " .. result .. "\n")
+				--NKPrint("Recipe: " .. result .. "\n")
 
 				local frame = Windows:createWindow("TUGLook/Frame")
 
@@ -274,7 +412,7 @@ function RecipeView:LoadRecipes()
 
 				frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
 
-				self:SlotHelper(frame, result, n)
+				self:SlotHelper(frame, result, n, recipe)
 
 				data:addChild(frame)
 
@@ -311,7 +449,7 @@ function RecipeView:LoadRecipes()
 
 				if type(station) == "string" then
 
-					NKPrint("Station: " .. station .. "\n")
+					--NKPrint("Station: " .. station .. "\n")
 
 					self:SlotHelper(interchangeables, station)
 
@@ -373,7 +511,7 @@ function RecipeView:LoadRecipes()
 
 			if type(tool) == "string" then
 
-				NKPrint("Tool: " .. tool .. "\n")
+				--NKPrint("Tool: " .. tool .. "\n")
 
 				local frame = Windows:createWindow("TUGLook/Frame")
 
@@ -426,7 +564,7 @@ function RecipeView:LoadRecipes()
 
 				for component, n in pairs(parts) do
 
-					NKPrint(component .. " unconsumed" .. "\n")
+					--NKPrint(component .. " unconsumed" .. "\n")
 
 					if component == "Crude Rock Head" then
 						component = "Round Rock"
@@ -483,30 +621,30 @@ function RecipeView:LoadRecipes()
 
 					if component == "Long Shaft" then
 						component = "Wood Shaft"
-						NKPrint(" -> " .. component)
+						--NKPrint(" -> " .. component)
 					elseif component == "Crystal Shard" then
 						component = "Citrine Shard"
-						NKPrint(" -> " .. component)
+						--NKPrint(" -> " .. component)
 					elseif component == "Spear" then
 						component = "Wood Spear"
-						NKPrint(" -> " .. component)
+						--NKPrint(" -> " .. component)
 					elseif component == "Wood Log" then
 						component = "Wood Log Pine"
-						NKPrint(" -> " .. component)
+						--NKPrint(" -> " .. component)
 					elseif component == "Dark Green Clump" then
 						component = "Dark Green Grass Clump"
-						NKPrint(" -> " .. component)
+						--NKPrint(" -> " .. component)
 					elseif component == "Light Green Clump" then
 						component = "Light Green Grass Clump"
-						NKPrint(" -> " .. component)
+						--NKPrint(" -> " .. component)
 					elseif component == "Tan Clump" then
 						component = "Tan Grass Clump"
-						NKPrint(" -> " .. component)
+						--NKPrint(" -> " .. component)
 					elseif component == "Sat Green Clump" then --??? no such grass?
 						component = "Light Green Grass Clump"
-						NKPrint(" -> " .. component)
+						--NKPrint(" -> " .. component)
 					else
-						NKPrint(component .. "\n")
+						--NKPrint(component .. "\n")
 					end
 
 					if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
@@ -527,30 +665,30 @@ function RecipeView:LoadRecipes()
 
 						if component == "Long Shaft" then
 							component = "Wood Shaft"
-							NKPrint(" -> " .. component)
+							--NKPrint(" -> " .. component)
 						elseif component == "Crystal Shard" then
 							component = "Citrine Shard"
-							NKPrint(" -> " .. component)
+							--NKPrint(" -> " .. component)
 						elseif component == "Spear" then
 							component = "Wood Spear"
-							NKPrint(" -> " .. component)
+							--NKPrint(" -> " .. component)
 						elseif component == "Wood Log" then
 							component = "Wood Log Pine"
-							NKPrint(" -> " .. component)
+							--NKPrint(" -> " .. component)
 						elseif component == "Dark Green Clump" then
 							component = "Dark Green Grass Clump"
-							NKPrint(" -> " .. component)
+							--NKPrint(" -> " .. component)
 						elseif component == "Light Green Clump" then
 							component = "Light Green Grass Clump"
-							NKPrint(" -> " .. component)
+							--NKPrint(" -> " .. component)
 						elseif component == "Tan Clump" then
 							component = "Tan Grass Clump"
-							NKPrint(" -> " .. component)
+							--NKPrint(" -> " .. component)
 						elseif component == "Sat Green Clump" then --??? no such grass?
 							component = "Light Green Grass Clump"
-							NKPrint(" -> " .. component)
+							--NKPrint(" -> " .. component)
 						else
-							NKPrint(component .. "\n")
+							--NKPrint(component .. "\n")
 						end
 
 						if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
@@ -587,7 +725,7 @@ function RecipeView:LoadRecipes()
 
 end
 
-function RecipeView:SlotHelper(parent, item, n)
+function RecipeView:SlotHelper(parent, item, n, recipe)
 
 	local invItemContainer = Windows:createWindow("DefaultWindow")
 	invItemContainer:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
@@ -623,18 +761,42 @@ function RecipeView:SlotHelper(parent, item, n)
 
 	invSlot:setTooltipText(tooltipMessage)
 
-	-- On mouse enter
 	invSlot:subscribeEvent("MouseEntersSurface", function( args )
 		if self.m_active then
 			self:OnMouseEnterDragContainer(invSlot)
 		end
 	end)
 
-	-- On mouse leave
 	invSlot:subscribeEvent("MouseLeavesSurface", function( args )
 		if self.m_active then
 			self:OnMouseExitDragContainer(invSlot)
 		end
 	end)
+
+	if recipe ~= nil then
+
+		invSlot:subscribeEvent("MouseDoubleClick", function(args)
+
+			if self.m_active and self.cheatMode then
+
+				self:SpawnComponents(recipe)
+
+			end
+		end)
+
+	else
+
+		invSlot:subscribeEvent("MouseDoubleClick", function(args)
+
+			if self.m_active and self.cheatMode then
+
+				if n == nil then n = 1 end
+
+				self:spawnItem(item, n)
+
+			end
+		end)
+
+	end
 
 end

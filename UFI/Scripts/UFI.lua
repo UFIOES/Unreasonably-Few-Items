@@ -20,6 +20,7 @@ end
 -------------------------------------------------------------------------------
 -- Called from C++ when the current game enters
 function UFI:Enter()
+	self.UFIView.m_player.m_defaultInputContext:NKRegisterDirectCommand("R", self.UFIView, "ShowInterface", KEY_ONCE)
 end
 
 -------------------------------------------------------------------------------
@@ -35,11 +36,9 @@ end
 
 -------------------------------------------------------------------------------
 function UFI:LocalPlayerReady(player)
-	self.m_UFIView = UFIView.new("SurvivalLayoutUFI.layout", player)
-	
-	player.m_toggleInventorySignal:Add(function(show)
-		self.m_UFIView:ToggleInventory(show)
-	end)
+
+	self.UFIView = UFIView.new("SurvivalLayoutUFI.layout", player)
+
 end
 
 
