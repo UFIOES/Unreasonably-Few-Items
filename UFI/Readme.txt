@@ -3,17 +3,17 @@ UFI: Unreasonably Few Items
 By: UFIOES
 
 To install, extract UFI into \Steam\SteamApps\common\TUG\Mods\
-Then add "Mods/UFI" to \Steam\SteamApps\common\TUG\Config\mods.txt, it must be after "Game/Core".
+Then add "Mods/UFI" to \Steam\SteamApps\common\TUG\Config\mods.txt
 e.g.
 
 Mods
 {
 	"Mods/SteamPower"
+	"Mods/UFI"
 	"Game/Dev"
 	"Game/Survival"
 	"Game/Creative"
 	"Game/Core"
-	"Mods/UFI"
 	"Mods/CommonLib"
 }
 
