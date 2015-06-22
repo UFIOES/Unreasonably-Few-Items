@@ -148,7 +148,7 @@ function RecipeView:SpawnComponents(recipe)
 
 				if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
 
-					self:spawnItem(component, n)
+					self:spawnItem(component, 1)
 
 				end
 
