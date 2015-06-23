@@ -400,6 +400,42 @@ function RecipeView:LoadRecipes()
 		end
 		]]
 
+		local craftButton = Windows:createWindow("TUGLook/Button")
+
+		craftButton:subscribeEvent("MouseClick", function(args)
+
+			if self.m_active then
+
+				if self.m_controller.m_dying or self.m_controller.m_actionLocked then
+					return
+				end
+
+				local eyePosition = self.m_controller:NKGetPosition() + vec3(0.0, self.m_controller.m_cameraHeight, 0.0)
+				local lookDirection = Eternus.GameState.m_activeCamera:ForwardVector()
+				local result = NKPhysics.RayCastCollect(eyePosition, lookDirection, self.m_controller:GetMaxReachDistance(), {self.m_controller})
+
+				local tracePos
+				if result then
+					tracePos = result.point
+				else
+					tracePos = eyePosition
+					tracePos = tracePos + (lookDirection:mul_scalar(2.5))
+				end
+
+				UFI.instance:RaiseServerEvent("ServerEvent_CraftRecipe", {at = tracePos, recipe = recipe:GetRecipeName(), player = self.m_controller.object})
+
+			end
+
+		end)
+
+		craftButton:setText("Craft")
+
+		craftButton:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
+
+		craftButton:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
+
+		data:addChild(craftButton)
+
 		for result, n in pairs(recipe["m_results"]) do
 
 			if type(result) == "string" then

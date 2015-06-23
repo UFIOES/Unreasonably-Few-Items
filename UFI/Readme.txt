@@ -21,4 +21,4 @@ I would like to thank:
 
 Copyright 2015 UFIOES
 
-You may not redistribute it without my express written permission.
+You may not redistribute UFI without my express written permission.

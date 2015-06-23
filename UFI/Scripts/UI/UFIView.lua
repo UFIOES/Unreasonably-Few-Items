@@ -11,7 +11,7 @@ end
 
 -------------------------------------------------------------------------------
 -- Player and inventory will be the same, need to remove one.
-function UFIView:Constructor( layout, model )
+function UFIView:Constructor(layout, model)
 
 	self.showing = false
 
