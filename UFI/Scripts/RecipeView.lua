@@ -131,7 +131,7 @@ function RecipeView:SpawnComponents(recipe)
 				if component == "Long Shaft" then
 					component = "Wood Shaft"
 				elseif component == "Crystal Shard" then
-					component = "Citrine Shard"
+					component = "Blue Crystal Shard"
 				elseif component == "Spear" then
 					component = "Wood Spear"
 				elseif component == "Wood Log" then
@@ -159,7 +159,7 @@ function RecipeView:SpawnComponents(recipe)
 					if component == "Long Shaft" then
 						component = "Wood Shaft"
 					elseif component == "Crystal Shard" then
-						component = "Citrine Shard"
+						component = "Blue Crystal Shard"
 					elseif component == "Spear" then
 						component = "Wood Spear"
 					elseif component == "Wood Log" then
@@ -659,7 +659,7 @@ function RecipeView:LoadRecipes()
 						component = "Wood Shaft"
 						--NKPrint(" -> " .. component)
 					elseif component == "Crystal Shard" then
-						component = "Citrine Shard"
+						component = "Blue Crystal Shard"
 						--NKPrint(" -> " .. component)
 					elseif component == "Spear" then
 						component = "Wood Spear"
@@ -703,7 +703,7 @@ function RecipeView:LoadRecipes()
 							component = "Wood Shaft"
 							--NKPrint(" -> " .. component)
 						elseif component == "Crystal Shard" then
-							component = "Citrine Shard"
+							component = "Blue Crystal Shard"
 							--NKPrint(" -> " .. component)
 						elseif component == "Spear" then
 							component = "Wood Spear"
