@@ -1,10 +1,44 @@
 
 include("Scripts/UI/UFIView.lua")
 include("Scripts/Recipes/DefaultRecipe.lua")
+include("Scripts/Recipes/ModularRecipe.lua")
+include("Scripts/Characters/BasePlayer.lua")
 
 -------------------------------------------------------------------------------
 if UFI == nil then
 	UFI = EternusEngine.ModScriptClass.Subclass("UFI")
+end
+
+BasePlayer.OnSuccessfulCraft = function (self, craftedObj)
+	self:RaiseGameAction("Craft", craftedObj)
+	if UFI.instance.UFIView.RecipeView.descoveryMode then UFI.instance:OnSuccessfulCraft(craftedObj) end
+end
+
+ModularRecipe.SpawnResultItem = function (self, craftAction, objName, spawnpos )
+	-- Flip key/value in craftAction.removals to meet when ModularTool expects
+	local removals = {}
+	for object, slot in pairs(craftAction.removals) do
+		removals[slot] = object
+	end
+
+	local obj = Eternus.GameObjectSystem:NKCreateNetworkedGameObject(objName, true, true, {CraftComponents = removals})
+	if obj then
+
+		obj:NKSetPosition(spawnpos)
+
+		if obj:NKGetPlaceable() then
+			local rot = quat.new(0.0,0.0,1.0,0.0)
+			if craftAction.station then
+				rot  = craftAction.stationObj:NKGetOrientation()
+			end
+			obj:NKSetOrientation(rot)
+			obj:NKGetInstance():OnCraftComplete()
+			obj:NKPlaceInWorld(false, false)
+		end
+	end
+
+	return obj
+
 end
 
 UFI.RegisterScriptEvent("ServerEvent_CraftRecipe",
@@ -201,8 +235,6 @@ function UFI:ServerEvent_CraftRecipe(args)
 					if count < requiredAmount then
 
 						--NKPrint("Do Not Have Everything: " .. object)
-
-
 
 					else
 
@@ -667,7 +699,7 @@ end
  -------------------------------------------------------------------------------
  -- Called once from C++ at engine initialization time
 function UFI:Initialize()
-
+	self.isKeyBound = false
 end
 
 -------------------------------------------------------------------------------
@@ -694,24 +726,50 @@ end
 -- Called from C++ every update tick
 function UFI:Process(dt)
 
-	if self.UFIView and not self.isKeyBound then
+	if self.UFIView and self.UFIView.m_player.m_defaultInputContext and not self.isKeyBound then
 
 		self.UFIView.m_player.m_defaultInputContext:NKRegisterNamedCommand("Toggle Recipe Interface", self.UFIView, "ShowInterface", KEY_ONCE)
 
 		self.isKeyBound = true
 
+		if not self.discoveredRecipes then self.discoveredRecipes = {} end
+
 	end
 
 end
+-------------------------------------------------------------------------------
+function UFI:Save(outData)
 
+	outData.discoveredRecipes = self.discoveredRecipes
+
+end
+
+function UFI:Restore(inData, version)
+
+	if inData.discoveredRecipes then
+		self.discoveredRecipes = inData.discoveredRecipes
+	else
+		self.discoveredRecipes = {}
+	end
+
+end
 -------------------------------------------------------------------------------
 function UFI:LocalPlayerReady(player)
 
 	self.UFIView = UFIView.new("SurvivalLayoutUFI.layout", player)
 
 end
+-------------------------------------------------------------------------------
+function UFI:OnSuccessfulCraft(craftedObj)
 
+NKPrint("HEY LISTEN!!!")
 
+	if not self.discoveredRecipes[craftedObj:NKGetName()] then
 
+		self.discoveredRecipes[craftedObj:NKGetName()] = true
+
+	end
+
+end
 
 EntityFramework:RegisterModScript(UFI)

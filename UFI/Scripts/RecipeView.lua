@@ -48,15 +48,24 @@ function RecipeView:PostLoad(layout, controller)
 
 	self.cheatModeButton = CEGUI.toToggleButton(self:GetChild("CheatMode"))
 
-	--self.cheatModeLabel = CEGUI.toLabel(self:GetChild("CheatModeLabel"))
+	self.discoveryModeButton = CEGUI.toToggleButton(self:GetChild("DiscoveryMode"))
 
 	self.cheatMode = false
+
+	self.descoveryMode = true
 
 	self.searching = false
 
 	self.cheatModeButton:subscribeEvent("SelectStateChanged", function(args)
 		if self.m_active then
 			self.cheatMode = not self.cheatMode
+		end
+	end)
+
+	self.discoveryModeButton:subscribeEvent("SelectStateChanged", function(args)
+		if self.m_active then
+			self.descoveryMode = not self.descoveryMode
+			self:OnTextChanged()
 		end
 	end)
 
@@ -102,6 +111,8 @@ function RecipeView:PostLoad(layout, controller)
 	EternusEngine.UI.Layers.Gameplay:addChild(self.m_tooltip)
 
 	self:LoadRecipes()
+
+	self:LayoutAllRecipes()
 
 end
 
@@ -270,8 +281,10 @@ function RecipeView:OnTextChanged()
 
 	if self.text == "" then
 		self.text = nil
+		self:LayoutAllRecipes()
+		return
 	end
-
+--[[
 	self.recipeScrollpane:destroyChild(self.recipesList)
 
 	self.recipesList = Windows:createWindow("VerticalLayoutContainer")
@@ -282,6 +295,33 @@ function RecipeView:OnTextChanged()
 	self.recipeScrollpane:addChild(self.recipesList)
 
 	self:LoadRecipes()
+]]
+
+	for i, recipe in pairs(self.recipes) do
+
+		self.recipesList:removeChild(recipe.data)
+
+		if not UFI.instance.discoveredRecipes then
+
+			if string.find(string.lower(recipe.name), string.lower(self.text)) then
+
+				self.recipesList:addChild(recipe.data)
+
+				CEGUI.toHorizontalLayoutContainer(recipe.data):layout()
+
+			end
+
+		elseif (UFI.instance.discoveredRecipes[recipe.name] or not self.descoveryMode) and string.find(string.lower(recipe.name), string.lower(self.text)) then
+
+			self.recipesList:addChild(recipe.data)
+
+			CEGUI.toHorizontalLayoutContainer(recipe.data):layout()
+
+		end
+
+	end
+
+	CEGUI.toVerticalLayoutContainer(self.recipesList):layout()
 
 end
 -------------------------------------------------------------------------------
@@ -301,8 +341,6 @@ function RecipeView:OnSearchboxExit()
 
 	self.searchbox:deactivate()
 
-	--self:OnSearchboxDeactivated()
-
 end
 -------------------------------------------------------------------------------
 function RecipeView:OnSearchboxDeactivated()
@@ -313,11 +351,41 @@ function RecipeView:OnSearchboxDeactivated()
 
 end
 -------------------------------------------------------------------------------
+function RecipeView:LayoutAllRecipes()
+
+	for i, recipe in pairs(self.recipes) do
+
+		self.recipesList:removeChild(recipe.data)
+
+		if not UFI.instance.discoveredRecipes then
+
+			self.recipesList:addChild(recipe.data)
+
+			CEGUI.toHorizontalLayoutContainer(recipe.data):layout()
+
+		elseif UFI.instance.discoveredRecipes[recipe.name] or not self.descoveryMode then
+
+			self.recipesList:addChild(recipe.data)
+
+			CEGUI.toHorizontalLayoutContainer(recipe.data):layout()
+
+		end
+
+	end
+
+	CEGUI.toVerticalLayoutContainer(self.recipesList):layout()
+
+end
+
 function RecipeView:LoadRecipes()
-	once = true
+	local once = true
 	local CSys = Eternus.CraftingSystem
 
-	recipesSorted = {}
+	local recipesSorted = {}
+
+	self.recipes = {}
+
+	local name = ""
 
 	local index = 1
 
@@ -325,47 +393,45 @@ function RecipeView:LoadRecipes()
 		if (CSys.m_recipes[i] ~= nil) then
 			for j, recipe in pairs(CSys.m_recipes[i]) do
 
-				if self.text then
+				--[[if self.text then
 
 					for result, n in pairs(recipe["m_results"]) do
 
-						if type(result) == "string" and string.find(string.lower(result), string.lower(self.text)) then
+						if type(result) == "string" and UFI.instance.discoveredRecipes[result] and string.find(string.lower(result), string.lower(self.text)) then
 
 							recipesSorted[index] = recipe
 
 							index = index + 1
 
+							break
+
 						end
 
 					end
 
-				else
+				else]]
 
 					recipesSorted[index] = recipe
 
 					index = index + 1
 
-				end
+				--end
 
 			end
 		end
 	end
 
-	if not self.text then
+	table.sort(recipesSorted, function(a, b)
 
-		table.sort(recipesSorted, function(a, b)
+		for resulta, na in pairs(a["m_results"]) do
 
-			for resulta, na in pairs(a["m_results"]) do
+			if type(resulta) == "string" then
 
-				if type(resulta) == "string" then
+				for resultb, nb in pairs(b["m_results"]) do
 
-					for resultb, nb in pairs(b["m_results"]) do
+					if type(resultb) == "string" then
 
-						if type(resultb) == "string" then
-
-							return resulta < resultb
-
-						end
+						return resulta < resultb
 
 					end
 
@@ -373,11 +439,11 @@ function RecipeView:LoadRecipes()
 
 			end
 
-			return false
+		end
 
-		end)
+		return false
 
-	end
+	end)
 
 	for j, recipe in pairs(recipesSorted) do
 
@@ -439,6 +505,8 @@ function RecipeView:LoadRecipes()
 		for result, n in pairs(recipe["m_results"]) do
 
 			if type(result) == "string" then
+
+				name = result
 
 				--NKPrint("Recipe: " .. result .. "\n")
 
@@ -751,13 +819,15 @@ function RecipeView:LoadRecipes()
 
 		end
 
-		self.recipesList:addChild(data)
+		table.insert(self.recipes, {data = data, name = name})
+
+		--self.recipesList:addChild(data)
 
 		CEGUI.toHorizontalLayoutContainer(data):layout()
 
 	end
 
-	CEGUI.toVerticalLayoutContainer(self.recipesList):layout()
+	--CEGUI.toVerticalLayoutContainer(self.recipesList):layout()
 
 end
 
