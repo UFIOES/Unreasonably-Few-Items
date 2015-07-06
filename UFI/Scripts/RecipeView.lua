@@ -55,7 +55,13 @@ function RecipeView:PostLoad(layout, controller)
 	self.descoveryMode = true
 
 	self.searching = false
-
+--[[
+	EternusEngine.UI.Layers.Gameplay:subscribeEvent("CaptureLost", function(args)
+		if self.m_active then
+			self:ToggleInterface()
+		end
+	end)
+]]
 	self.cheatModeButton:subscribeEvent("SelectStateChanged", function(args)
 		if self.m_active then
 			self.cheatMode = not self.cheatMode

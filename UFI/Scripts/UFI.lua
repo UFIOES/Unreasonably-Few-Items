@@ -11,7 +11,8 @@ end
 
 BasePlayer.OnSuccessfulCraft = function (self, craftedObj)
 	self:RaiseGameAction("Craft", craftedObj)
-	if UFI.instance.UFIView.RecipeView.descoveryMode then UFI.instance:OnSuccessfulCraft(craftedObj) end
+
+	if UFI.instance.UFIView.m_recipeView.descoveryMode then UFI.instance:OnSuccessfulCraft(craftedObj) end
 end
 
 ModularRecipe.SpawnResultItem = function (self, craftAction, objName, spawnpos )
@@ -700,6 +701,9 @@ end
  -- Called once from C++ at engine initialization time
 function UFI:Initialize()
 	self.isKeyBound = false
+
+	if not self.discoveredRecipes then self.discoveredRecipes = {} end
+
 end
 
 -------------------------------------------------------------------------------
@@ -732,8 +736,6 @@ function UFI:Process(dt)
 
 		self.isKeyBound = true
 
-		if not self.discoveredRecipes then self.discoveredRecipes = {} end
-
 	end
 
 end
@@ -762,11 +764,11 @@ end
 -------------------------------------------------------------------------------
 function UFI:OnSuccessfulCraft(craftedObj)
 
-NKPrint("HEY LISTEN!!!")
-
 	if not self.discoveredRecipes[craftedObj:NKGetName()] then
 
 		self.discoveredRecipes[craftedObj:NKGetName()] = true
+
+		self.UFIView.m_recipeView:OnTextChanged()
 
 	end
 
