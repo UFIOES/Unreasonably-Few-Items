@@ -3,6 +3,7 @@ include("Scripts/UI/UFIView.lua")
 include("Scripts/Recipes/DefaultRecipe.lua")
 include("Scripts/Recipes/ModularRecipe.lua")
 include("Scripts/Characters/BasePlayer.lua")
+include("Scripts/Recipes/CraftingSystem.lua")
 
 -------------------------------------------------------------------------------
 if UFI == nil then
@@ -84,13 +85,9 @@ function UFI:ServerEvent_CraftRecipe(args)
 
 	Eternus.CraftingSystem:RemoveInvalidObjects(areaObjects)
 
-	local craftAction = recipe:GenerateCraftAction(areaObjects, player)
-
-	if craftAction then
+	if recipe:IsRecipeSatisfied(areaObjects, player) and recipe:BeginCrafting(areaObjects, player) and player:StartCrafting(recipe, areaObjects) then
 
 		success = true
-
-		player:StartCrafting(recipe:GenerateCraftAction(areaObjects, player))
 
 	else
 
@@ -573,13 +570,11 @@ function UFI:ServerEvent_CraftRecipe(args)
 
 			areaObjects = player:GetCraftableObjectsNearPosition()
 
-			craftAction = recipe:GenerateCraftAction(areaObjects, player)
+			Eternus.CraftingSystem:RemoveInvalidObjects(areaObjects)
 
-			if craftAction then
+			if recipe:IsRecipeSatisfied(areaObjects, player) and recipe:BeginCrafting(areaObjects, player) and player:StartCrafting(recipe, areaObjects) then
 
 				success = true
-
-				player:StartCrafting(craftAction)
 
 			end
 
@@ -695,6 +690,7 @@ end
 function UFI:Constructor()
 	UFI.instance = self
 	self.isKeyBound = false
+
 end
 
  -------------------------------------------------------------------------------
@@ -704,6 +700,86 @@ function UFI:Initialize()
 
 	if not self.discoveredRecipes then self.discoveredRecipes = {} end
 
+	self.archetypes = {}
+
+	self.tools = {}
+
+	for i, schematic in pairs(Eternus.GameObjectSystem:NKGetGameObjectSchematics()) do
+
+		--NKPrint(schematic:NKGetName())
+
+		local category = schematic:NKGetCategory()
+
+		local tier = schematic:NKGetTier()
+
+		if category and tier then
+
+			if not self.tools[category] then self.tools[category] = {} end
+
+			if not self.tools[category][tier] then self.tools[category][tier] = {} end
+
+			table.insert(self.tools[category][tier], schematic:NKGetName())
+
+		end
+
+		local archetype = schematic:NKGetCraftingArcheType()
+
+		if archetype and archetype ~= "" then
+
+			if not self.archetypes[archetype] then self.archetypes[archetype] = {} end
+
+			table.insert(self.archetypes[archetype], schematic:NKGetName())
+
+		end
+
+	end
+
+	local ArchetypeData = io.open("Mods\\UFI\\Data\\ArchetypeData.txt", "w")
+
+	for archetype, schematics in pairs(self.archetypes) do
+
+		NKPrint(archetype .. " {")
+		ArchetypeData:write(archetype .. " {\n")
+
+		for i, schematic in pairs(schematics) do
+
+			NKPrint("\t" .. schematic)
+			ArchetypeData:write("\t" .. schematic .. "\n")
+
+		end
+
+		NKPrint("}")
+		ArchetypeData:write("}\n")
+
+	end
+
+	ArchetypeData:flush()
+
+	for category, tiers in pairs(self.tools) do
+
+		NKPrint(category .. " {")
+		ArchetypeData:write(category .. " {\n")
+
+		for tier, tools in pairs(tiers) do
+
+			for i, tool in pairs(tools) do
+
+				NKPrint("\t(" .. tier .. ") " .. tool)
+				ArchetypeData:write("\t(" .. tier .. ") " .. tool .. "\n")
+
+			end
+
+		end
+
+		NKPrint("}")
+		ArchetypeData:write("}\n")
+
+	end
+
+	ArchetypeData:flush()
+
+	ArchetypeData:close()
+
 end
 
 -------------------------------------------------------------------------------
@@ -712,7 +788,7 @@ function UFI:Enter()
 
 	if self.UFIView and not self.isKeyBound then
 
-		self.UFIView.m_player.m_defaultInputContext:NKRegisterNamedCommand("Toggle Recipe Interface", self.UFIView, "ShowInterface", KEY_ONCE)
+		self.UFIView.player.m_defaultInputContext:NKRegisterNamedCommand("Toggle Recipe Interface", self.UFIView, "ShowInterface", KEY_ONCE)
 
 		self.isKeyBound = true
 
@@ -730,11 +806,19 @@ end
 -- Called from C++ every update tick
 function UFI:Process(dt)
 
-	if self.UFIView and self.UFIView.m_player.m_defaultInputContext and not self.isKeyBound then
+	if Eternus.InputSystem:NKIsDown(EternusKeycodes.LSHIFT) then return end
 
-		self.UFIView.m_player.m_defaultInputContext:NKRegisterNamedCommand("Toggle Recipe Interface", self.UFIView, "ShowInterface", KEY_ONCE)
+	if self.UFIView and self.UFIView.player.m_defaultInputContext and not self.isKeyBound then
+
+		self.UFIView.player.m_defaultInputContext:NKRegisterNamedCommand("Toggle Recipe Interface", self.UFIView, "ShowInterface", KEY_ONCE)
 
 		self.isKeyBound = true
+
+	end
+
+	if self.UFIView and self.UFIView.m_recipeView and self.UFIView.m_recipeView.active then
+
+		self.UFIView.m_recipeView:Update(dt)
 
 	end
 
@@ -758,6 +842,64 @@ end
 -------------------------------------------------------------------------------
 function UFI:LocalPlayerReady(player)
 
+	local CSys = Eternus.CraftingSystem
+
+	local allRecipes = {}
+
+	for i = CSys.m_highestPriority, 0, -1 do
+		if (CSys.m_recipes[i] ~= nil) then
+			for j, recipe in pairs(CSys.m_recipes[i]) do
+
+				table.insert(allRecipes, recipe)
+
+			end
+		end
+	end
+
+	for j, recipe in pairs(allRecipes) do
+
+		if recipe["m_results"] and recipe["m_components"] and recipe["m_components"]["Head"] and recipe["m_components"]["Head"]["archetype"] then
+
+			for result, n in pairs(recipe["m_results"]) do
+
+				local tool = Eternus.GameObjectSystem:NKFindObjectSchematicByName(result)
+
+				if tool then
+
+					local category = tool:NKGetCategory()
+
+					if category then
+
+						local archetype = recipe["m_components"]["Head"]["archetype"]
+
+						local heads = self:FilterGenerics(archetype)
+
+						if type(heads) == "table" then
+
+							for k, head in pairs(heads) do
+
+								local tier = Eternus.GameObjectSystem:NKFindObjectSchematicByName(head):NKGetTier()
+
+								if not self.tools[category] then self.tools[category] = {} end
+
+								if not self.tools[category][tier] then self.tools[category][tier] = {} end
+
+								table.insert(self.tools[category][tier], result)
+
+							end
+
+						end
+
+					end
+
+				end
+
+			end
+
+		end
+
+	end
+
 	self.UFIView = UFIView.new("SurvivalLayoutUFI.layout", player)
 
 end
@@ -769,6 +911,36 @@ function UFI:OnSuccessfulCraft(craftedObj)
 		self.discoveredRecipes[craftedObj:NKGetName()] = true
 
 		self.UFIView.m_recipeView:OnTextChanged()
+
+	end
+
+end
+-------------------------------------------------------------------------------
+function UFI:FilterGenerics(object)
+
+	if self.archetypes[object] then
+
+		return self.archetypes[object]
+
+	else
+
+		return object
+
+	end
+
+end
+
+function UFI:FindTools(category, tier)
+
+	if self.tools[category] then
+
+		if self.tools[category][tier] then return self.tools[category][tier] end
+
+		for t, tool in pairs(self.tools[category]) do
+
+			if t >= tier then return tool end
+
+		end
 
 	end
 

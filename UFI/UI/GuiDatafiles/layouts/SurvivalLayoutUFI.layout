@@ -12,53 +12,75 @@
             <Property name="Area" value="{{0,20},{0,20},{1,-20},{0.825,-20}}" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="FrameEnabled" value="false" />
-            <Window type="TUGLook/ScrollablePane" name="Recipes" >
-                <Property name="Area" value="{{0,0},{0,32},{1,-150},{1,0}}" />
-                <Property name="ForceVertScrollbar" value="true" />
-                <AutoWindow namePath="__auto_container__" >
-                    <Property name="MouseInputPropagationEnabled" value="true" />
-                </AutoWindow>
-                <AutoWindow namePath="__auto_hscrollbar__" >
-                    <Property name="AlwaysOnTop" value="true" />
-                </AutoWindow>
-                <AutoWindow namePath="__auto_vscrollbar__" >
-                    <Property name="AlwaysOnTop" value="true" />
-                    <AutoWindow namePath="__auto_incbtn__" >
-                        <Property name="HoverImage" value="TUGLook/MiniVertScrollDownHover" />
-                        <Property name="NormalImage" value="TUGLook/MiniVertScrollDownNormal" />
-                        <Property name="PushedImage" value="TUGLook/MiniVertScrollDownNormal" />
-                    </AutoWindow>
-                    <AutoWindow namePath="__auto_decbtn__" >
-                        <Property name="HoverImage" value="TUGLook/MiniVertScrollUpHover" />
-                        <Property name="NormalImage" value="TUGLook/MiniVertScrollUpNormal" />
-                        <Property name="PushedImage" value="TUGLook/MiniVertScrollUpNormal" />
-                    </AutoWindow>
-                </AutoWindow>
-            </Window>
-            <Window type="TUGLook/Editbox" name="Searchbox" >
-                <Property name="Area" value="{{0,0},{0,1},{1,-150},{0,33}}" />
-                <Property name="MaxTextLength" value="50" />
-            </Window>
-            <Window type="TUGLook/Checkbox" name="CheatMode" >
-                <Property name="Area" value="{{1,-36},{0,0},{1,4},{0,32}}" />
-                <Property name="TooltipText" value="Cheat Mode" />
-            </Window>
-            <Window type="TUGLook/Label" name="CheatModeLabel" >
-                <Property name="Area" value="{{1,-150},{0,0},{1,-32},{0,32}}" />
-                <Property name="Font" value="DevinneSwash-8" />
-                <Property name="Text" value="Cheat Mode:" />
+            <Window type="TUGLook/StaticImage" name="RecipesFrame" >
+                <Property name="Area" value="{{0,64},{0,0},{1,-192},{1,0}}" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Window type="TUGLook/ScrollablePane" name="Recipes" >
+                    <Property name="Area" value="{{0,10},{0,42},{1,-10},{1,-10}}" />
+                    <Property name="ForceVertScrollbar" value="true" />
+                    <AutoWindow namePath="__auto_container__" >
+                        <Property name="MouseInputPropagationEnabled" value="true" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_hscrollbar__" >
+                        <Property name="AlwaysOnTop" value="true" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_vscrollbar__" >
+                        <Property name="AlwaysOnTop" value="true" />
+                        <AutoWindow namePath="__auto_incbtn__" >
+                            <Property name="HoverImage" value="TUGLook/MiniVertScrollDownHover" />
+                            <Property name="NormalImage" value="TUGLook/MiniVertScrollDownNormal" />
+                            <Property name="PushedImage" value="TUGLook/MiniVertScrollDownNormal" />
+                        </AutoWindow>
+                        <AutoWindow namePath="__auto_decbtn__" >
+                            <Property name="HoverImage" value="TUGLook/MiniVertScrollUpHover" />
+                            <Property name="NormalImage" value="TUGLook/MiniVertScrollUpNormal" />
+                            <Property name="PushedImage" value="TUGLook/MiniVertScrollUpNormal" />
+                        </AutoWindow>
+                    </AutoWindow>
+                </Window>
+                <Window type="TUGLook/Editbox" name="Searchbox" >
+                    <Property name="Area" value="{{0,10},{0,10},{1,-10},{0,42}}" />
+                    <Property name="MaxTextLength" value="50" />
+                </Window>
             </Window>
-            <Window type="TUGLook/Label" name="DiscoveryModeLabel" >
-                <Property name="Area" value="{{1,-150},{0,32},{1,-32},{0,64}}" />
-                <Property name="Font" value="DevinneSwash-8" />
-                <Property name="Text" value="Discovery Mode:" />
+            <Window type="TUGLook/StaticImage" name="OptionsFrame" >
+                <Property name="Area" value="{{1,-192},{0,0},{1,0},{1,0}}" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
-            </Window>
-            <Window type="TUGLook/Checkbox" name="DiscoveryMode" >
-                <Property name="Area" value="{{1,-36},{0,32},{1,4},{0,64}}" />
-                <Property name="Selected" value="true" />
-                <Property name="TooltipText" value="Cheat Mode" />
+                <Window type="TUGLook/Checkbox" name="CheatMode" >
+                    <Property name="Area" value="{{1,-36},{0,10},{1,4},{0,42}}" />
+                    <Property name="TooltipText" value="Cheat Mode" />
+                </Window>
+                <Window type="TUGLook/Label" name="CheatModeLabel" >
+                    <Property name="Area" value="{{0,10},{0,10},{1,-32},{0,42}}" />
+                    <Property name="Font" value="DevinneSwash-8" />
+                    <Property name="Text" value="Cheat Mode:" />
+                    <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                    <Property name="HorzFormatting" value="LeftAligned" />
+                </Window>
+                <Window type="TUGLook/Checkbox" name="DiscoveryMode" >
+                    <Property name="Area" value="{{1,-36},{0,42},{1,4},{0,74}}" />
+                    <Property name="Selected" value="true" />
+                    <Property name="TooltipText" value="Cheat Mode" />
+                </Window>
+                <Window type="TUGLook/Label" name="DiscoveryModeLabel" >
+                    <Property name="Area" value="{{0,10},{0,42},{1,-32},{0,74}}" />
+                    <Property name="Font" value="DevinneSwash-8" />
+                    <Property name="Text" value="Discovery Mode:" />
+                    <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                    <Property name="HorzFormatting" value="LeftAligned" />
+                </Window>
+                <Window type="TUGLook/Checkbox" name="MouseCycleMode" >
+                    <Property name="Area" value="{{1,-36},{0,74},{1,4},{0,106}}" />
+                    <Property name="Selected" value="true" />
+                    <Property name="TooltipText" value="Cheat Mode" />
+                </Window>
+                <Window type="TUGLook/Label" name="MouseCycleModeLabel" >
+                    <Property name="Area" value="{{0,10},{0,74},{1,-32},{0,106}}" />
+                    <Property name="Font" value="DevinneSwash-8" />
+                    <Property name="Text" value="Mouse Cycle Mode:" />
+                    <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                    <Property name="HorzFormatting" value="LeftAligned" />
+                </Window>
             </Window>
         </Window>
     </Window>

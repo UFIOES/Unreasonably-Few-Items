@@ -1,16 +1,16 @@
 Manifest
 {
 	# Name of the mods.
-	Name = "UFI"
+	Name = "Unreasonably Few Items"
 
 	# Description of the mod.
-	Description = "Unreasonably Few Items"
+	Description = "A recipe interface for TUG"
 
 	# The major version number.
-	MajorVersion = 1.10
+	MajorVersion = 1.11
 
 	# The minor version number.
-	MinorVersion = 0.1
+	MinorVersion = 0.0
 
 	# The file path to the script that is the entry point.
 	ScriptFile = "Scripts/UFI.lua"

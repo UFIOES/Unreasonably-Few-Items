@@ -1,0 +1,1435 @@
+Tan Clump {
+	Tan Grass Clump
+	Tan Swamp Grass Clump
+	Swamp Tall Grass Clump
+	Savannah Grass Clump
+	Forest Ground Clump
+	Wheat Clump
+}
+Spear {
+	Bronze Spear
+	Bronze Short Javelin
+	Bronze Long Javelin
+	Bamboo Spear
+	Wood Spear
+}
+Bamboo Log {
+	Aged Bamboo Tall Log
+	Young Bamboo Tall Log
+	Aged Bamboo Medium Log
+	Young Bamboo Medium Log
+}
+Clay Clump {
+	Clay Clump
+	Clay Hills Clump
+}
+Veg Roots {
+	Root Redroot
+	Root Paddlesnip
+	Root Pakroot
+	Root Iceroot
+}
+Seeds {
+	Red Apple Seeds
+	Orange Seeds
+	Cherry Seeds
+	Pumpkin Seeds
+	Melon Seeds
+	Purple Gourd Seeds
+}
+Wood Plank {
+	Wood Plank
+	Fruitwood Plank
+	Hardwood Plank
+}
+Wood Shaft {
+	Hardened Wood Shaft
+}
+Small Modular Tool {
+	Bronze Axe
+	Bronze Hammer
+	Bronze Pick
+	Bronze Knife
+	Bronze Chisel
+	Bronze Spade
+	Bronze Trowel
+}
+Spear Head {
+	Bronze Spear Head
+}
+Wood Log {
+	Wood Log Ponsai Chunk 1
+	Wood Log Ponsai Chunk 2
+	Wood Log Ponsai Chunk 3
+	Wood Log Palm Tall
+	Wood Log Palm Short
+	Wood Log Maple
+	Joshua Tree Log Small
+	Joshua Tree Log Medium
+	Joshua Tree Log Large
+	Small Fruit Tree Log
+	Medium Fruit Tree Log
+	Large Fruit Tree Log
+	Cypress Log
+	Cut Log
+	Wood Log Aspen Chunk 1
+	Wood Log Aspen Chunk 2
+	Wood Log Acacia Chunk 1
+	Wood Log Acacia Chunk 2
+	Wood Log Acacia Chunk 3
+	Wood Log Acacia Chunk 4
+	Wood Log Pine
+	Wood Log Acacia Dead Chunk 1
+	Wood Log Acacia Dead Chunk 2
+	Wood Log Acacia Dead Chunk 3
+	Wood Log Acacia Dead Chunk 4
+}
+Large Modular Tool {
+	Bronze Shovel
+	Bronze Hoe
+}
+Pick Head {
+	Bronze Pick Head
+}
+Cobblestone Clump {
+	Cobblestone
+	Cobblestone Gray Clump
+	Cobblestone Blue Clump
+	Cobblestone Green Clump
+}
+Club {
+	Cactus Club
+	Spiked Club
+	Vine Club
+}
+Large Modular Weapon {
+	Bronze Axe Pike
+	Bronze Blunt Pike
+	Bronze Hammer Pike
+	Bronze Scythe
+}
+Crude Rock Head {
+	Small Rock Spire
+	Knapped Rock Spire
+	Round Rock
+	Jagged Rock
+	Flint Head
+}
+Shovel Head {
+	Bronze Shovel Head
+}
+Wood Handle {
+	Hardened Wood Handle
+}
+Stacked Wood {
+	Stacked Wood
+	Stacked Fruitwood
+	Stacked Hardwood
+}
+Knife Blade {
+	Bronze Knife Blade
+}
+Small Modular Weapon {
+	Bronze Cudgel
+	Bronze Sword
+}
+Crystal Shard {
+	Ruby Shard
+	Topaz Shard
+	Firestone Shard
+	Citrine Shard
+	Peridot Shard
+	Blue Crystal Shard
+	Froststone Shard
+	Sapphire Shard
+	Amethyst Shard
+}
+Long Shaft {
+	Wood Shaft
+	Bamboo Shaft
+}
+Light Green Clump {
+	Light Green Grass Clump
+	Green Hills Clump
+	Terrace Grass Clump
+	Mountain Grass Clump
+	Green Terrace Grass Clump
+	Mountain Green Grass Clump
+}
+Sat Green Clump {
+	Forest Tall Grass Clump
+	Bluebonnet Clump
+	Cotton Clump
+	Oats Clump
+}
+Leaf {
+	Hosta Leaf
+	Hosta Edged Leaf
+	Hosta Spotted Leaf
+	Lilly Pad
+}
+Veg Greens {
+	Redroot Leaves
+	Greens
+	Iceroot Leaves
+}
+Axe Head {
+	Bronze Axe Head
+}
+Leather Wrap {
+	Leather Strips
+}
+Hoe Head {
+	Bronze Hoe Head
+}
+Dark Green Clump {
+	Dark Green Grass Clump
+	Dark Green Pasture Clump
+	Dark Terrace Grass Clump
+	Dark Mountain Grass Clump
+}
+Sword Blade {
+	Bronze Sword Blade
+}
+Thatch {
+	Thatch Dark Green Clump
+	Thatch Light Green Clump
+	Thatch Tan Clump
+	Thatch Sat Green Clump
+	Thatch Hosta Leaf Edged Clump
+	Thatch Hosta Leaf Spotted Clump
+	Thatch Light Hosta Leaf Clump
+}
+Hammer Head {
+	Bronze Hammer Head
+}
+Cudgel Head {
+	Bronze Cudgel Head
+}
+Wood {
+	(2) Stacked Wood
+	(2) Stacked Fruitwood
+	(2) Stacked Hardwood
+	(2) Wood Plank
+	(2) Fruitwood Plank
+	(2) Hardwood Plank
+	(2) Bamboo Chunk
+	(2) Ponsai Tree
+	(2) Palm Tree B
+	(2) Coconut Tree A
+	(2) Maple Tree
+	(2) Winter Maple Tree
+	(2) Joshua Tree C
+	(2) Pine Tree
+	(2) Pine Tree Sapling
+	(2) Snowy Pine Tree
+	(2) Snowy Pine Tree Sapling
+	(2) Joshua Tree B
+	(2) Growing Fruit Tree Green
+	(2) Cypress Tree Bare
+	(2) Cypress Tree Moss 1
+	(2) Cypress Tree Moss 2
+	(2) Aged Bamboo TreeB
+	(2) Aged Bamboo TreeB2
+	(2) Young Bamboo TreeB
+	(2) Young Bamboo TreeB2
+	(2) Young Bamboo TreeB3
+	(2) Joshua Tree D
+	(2) Fruit Tree Green
+	(2) Fruit Tree Gold
+	(2) Fruit Tree Orange
+	(2) Fruit Tree Brown
+	(2) Apple Tree
+	(2) Orange Tree
+	(2) Cherry Tree
+	(2) Aged Bamboo TreeA
+	(2) Aged Bamboo TreeA2
+	(2) Young Bamboo TreeA
+	(2) Young Bamboo TreeA2
+	(2) Young Bamboo TreeA3
+	(2) Joshua Tree A
+	(2) Aspen Tree Green
+	(2) Aspen Tree Orange
+	(2) Aspen Tree Yellow
+	(2) Acacia Tree
+	(2) Dead Acacia Tree
+	(2) Joshua Tree E
+	(2) Banana Tree
+	(2) Banana Tree Bunch
+	(2) Spike Trap
+	(2) Hardened Wood
+	(2) Hardened Wood Shaft
+	(2) Hardened Wood Handle
+	(2) Double Cap Mushroom
+	(2) Cane Stave
+	(2) Wood Log Ponsai Chunk 3
+	(2) Wood Log Palm Tall
+	(2) Wood Log Palm Short
+	(2) Wood Log Maple
+	(2) Joshua Tree Log Small
+	(2) Joshua Tree Log Medium
+	(2) Joshua Tree Log Large
+	(2) Small Fruit Tree Log
+	(2) Medium Fruit Tree Log
+	(2) Cypress Log
+	(2) Wood Log Aspen Chunk 1
+	(2) Wood Log Acacia Chunk 1
+	(2) Chopped Wood
+	(2) Wood Branch
+	(2) Double Cap Mushroom Stem
+	(2) Aged Bamboo Tall Log
+	(2) Young Bamboo Tall Log
+	(2) Aged Bamboo Medium Log
+	(2) Young Bamboo Medium Log
+	(2) Wood Log Pine
+	(2) Wood Log Acacia Dead Chunk 1
+	(2) Log Lightwood
+	(2) Log Hardwood
+	(2) Log Fruitwood
+	(2) Chopped Light Wood
+	(2) Chopped Hard Wood
+	(2) Chopped Fruit Wood
+	(2) Bamboo A
+	(3) Crafting Stump
+	(4) Trepod Tree
+	(4) Watouwr Tree
+	(9) Hollow Oak Log
+	(0) Coconut Tree B
+	(0) Palm Tree B Sapling
+	(0) Palm Tree A
+	(0) Palm Tree A Sapling
+	(0) Winter Maple Tree Sapling
+	(0) Tree Sprout
+	(0) Fruitwood Sapling
+	(0) Hardwood Sapling
+	(0) Lightwood Sapling
+	(0) Growing Fruitwood Sapling
+	(0) Aged Bamboo Stalk
+	(0) Young Bamboo Stalk
+	(0) Young Bamboo Stalk3
+	(0) Young Bamboo Stalk4
+	(0) Young Bamboo Stalk5
+	(0) Thornwood
+	(0) Acacia Sapling
+	(0) Banana Bunch
+	(0) Bark Strip
+	(0) Forked Stick
+	(0) Wood Shaft
+	(0) Bamboo Shaft
+	(0) Wood Log Ponsai Chunk 1
+	(0) Wood Log Ponsai Chunk 2
+	(0) Large Fruit Tree Log
+	(0) Cut Log
+	(0) Wood Log Aspen Chunk 2
+	(0) Wood Log Acacia Chunk 2
+	(0) Wood Log Acacia Chunk 3
+	(0) Wood Log Acacia Chunk 4
+	(0) Wood Log Acacia Dead Chunk 2
+	(0) Wood Log Acacia Dead Chunk 3
+	(0) Wood Log Acacia Dead Chunk 4
+}
+Dye {
+	(2) Black Dye
+	(2) Blue Dye
+	(2) Cyan Dye
+	(2) Gray Dye
+	(2) Green Dye
+	(2) Light Blue Dye
+	(2) Light Purple Dye
+	(2) Light Gray Dye
+	(2) Magenta Dye
+	(2) Pink Dye
+	(2) Orange Dye
+	(2) Lime Dye
+	(2) Red Dye
+	(2) Purple Dye
+	(2) White Dye
+	(2) Yellow Dye
+	(2) Brown Dye
+}
+Mount {
+	(2) Percy
+	(3) Skull Stick
+}
+Decor {
+	(2) Scripted Cage Trap Wall
+	(2) Cage Trap Wall
+	(2) Cage Trap Floor
+	(2) Nest
+	(2) Lotus Chair
+	(2) Bamboo Stool
+	(3) Leather Bellows
+	(3) Wood Shuttle
+}
+Tilled Dirt {
+	(2) Dirt Tilled
+}
+Hoe {
+	(1) Bronze Spade
+	(1) Bronze Hoe
+	(2) Crude Hoe
+}
+Chest {
+	(2) Woven Basket
+	(2) Crude Chest
+}
+Potion {
+	(2) Growth Potion
+	(2) Durability Potion
+	(2) Fuel Potion
+	(2) Health Potion
+	(2) Speed Potion
+	(2) Poison Potion
+}
+Weapon {
+	(1) Bronze Cudgel
+	(1) Bronze Spear
+	(1) Bronze Sword
+	(1) Bronze Short Javelin
+	(1) Bronze Long Javelin
+	(1) Bronze Axe Pike
+	(1) Bronze Blunt Pike
+	(1) Bronze Hammer Pike
+	(1) Bronze Scythe
+	(2) Cactus Club
+	(2) Spiked Club
+	(2) Vine Club
+	(2) Spiked Staff
+	(2) Bamboo Spear
+	(2) Wood Spear
+	(2) Crude Sword
+	(3) Projectile Tester
+	(3) Projectile Test
+	(3) Freeze Projectile
+	(3) Fireball Projectile
+	(3) New Projectile Tester
+	(3) New Projectile Test
+	(3) Effect Tester
+	(3) Effect Test
+	(3) Effect Example
+	(3) Crude Slingshot
+	(3) Stone Projectile
+}
+Vegetation {
+	(1) Prickly Pear Cactus C
+	(1) Prickly Pear Cactus B
+	(1) Cactus Chunk
+	(2) Thatch Dark Green Clump
+	(2) Thatch Light Green Clump
+	(2) Thatch Tan Clump
+	(2) Thatch Sat Green Clump
+	(2) Thatch Hosta Leaf Edged Clump
+	(2) Thatch Hosta Leaf Spotted Clump
+	(2) Thatch Light Hosta Leaf Clump
+	(2) Leaf Canopy
+	(2) Gourd Shell
+	(2) Pumpkin Shell
+	(2) Sky Dome
+	(2) Growing Orange Seed Tree
+	(2) Orange Seed Tree
+	(2) Growing Cherry Seed Tree
+	(2) Cherry Seed Tree
+	(2) Placeable Mushroom Man
+	(2) Placeable Mad Mushroom Man
+	(2) Growing Coconut Seed Tree
+	(2) Coconut Seed Tree
+	(2) Placeable Goat
+	(2) Placeable Mama Goat
+	(2) Placeable Guardian Goat
+	(2) Placeable Kid
+	(2) Placeable Pet Kid
+	(2) Placeable BearRam
+	(2) Placeable BearRam Cub
+	(2) Placeable SaberCat
+	(2) Placeable Mama Cat
+	(2) Placeable Guardian Cat
+	(2) Placeable SaberCub
+	(2) Placeable Pet SaberCub
+	(2) Placeable Pet Cogat
+	(2) Growing Red Apple Seed Tree
+	(2) Apple Seed Tree
+	(2) Lilly Pad Nut
+	(2) Bulb Fern
+	(2) Saguaro Cactus C
+	(2) Saguaro Cactus A
+	(2) Cabbage Trap Sprout
+	(2) Saguaro Cactus B
+	(2) Young Cane Stalk
+	(2) Lotus Teeth
+	(2) Corpse Pitcher
+	(2) Cabbage Trap
+	(2) Fernicus
+	(2) Polar Fernicus
+	(2) Large Mushroom Cap
+	(2) Lotus Teeth Leaf
+	(2) Unripe Melon
+	(2) Cabbage Pod
+	(2) Unripe Purple Gourd
+	(2) Unripe Orange Pumpkin
+	(2) Lotus Teeth Core
+	(2) Unripe Apple
+	(2) Thatch Sat Green
+	(2) Thatch Light Green
+	(2) Thatch Light Hosta
+	(2) Thatch Hosta Leaf Spotted
+	(2) Thatch Dark Green
+	(2) Thatch Hosta Leaf Edged
+	(2) Thatch Tan
+	(2) Gourd Torch
+	(3) Cabbage Trap Mature
+	(3) Cabbage Trap Seeds
+	(3) Cabbage Trap Leaf Dummy
+	(3) Cabbage Trap Leaf Inverted Dummy
+	(3) Cabbage Trap Leaf Full
+	(3) Cabbage Trap Leaf Inverted Full
+	(3) Cabbage Trap Leaf
+	(3) Cabbage Trap Leaf Inverted
+	(4) Brown Geyser
+	(4) Unripe Cherries
+	(4) Unripe Orange
+	(0) Growing Shroom Hand Seed
+	(0) Growing Red Mushroom Seed
+	(0) Growing Purple Mushroom Seed
+	(0) Growing Purple Gourd Seed Vine
+	(0) Purple Gourd Seed Vine
+	(0) Growing Silver Mushroom Seed
+	(0) Growing Pumpkin Seed Vine
+	(0) Pumpkin Seed Vine
+	(0) Growing Melon Seed Vine
+	(0) Melon Seed Vine
+	(0) Growing Ghost Mushroom Seed
+	(0) Growing Pink Mushroom Seed
+	(0) Growing Brown Mushroom Seed
+	(0) Growing Blue Mushroom Seed
+	(0) Growing Orange Mushroom Seed
+	(0) Redroot
+	(0) Paddlesnip
+	(0) Pakroot
+	(0) Iceroot
+	(0) Red Mushroom
+	(0) Orange Mushroom
+	(0) Brown Mushroom
+	(0) Ghost Mushroom
+	(0) Blue Mushroom
+	(0) Purple Mushroom
+	(0) Pink Mushroom
+	(0) Silver Mushroom
+	(0) Grown Red Mushroom
+	(0) Grown Orange Mushroom
+	(0) Grown Brown Mushroom
+	(0) Grown Ghost Mushroom
+	(0) Grown Blue Mushroom
+	(0) Grown Purple Mushroom
+	(0) Grown Pink Mushroom
+	(0) Grown Silver Mushroom
+	(0) Small Red Mushroom
+	(0) Small Orange Mushroom
+	(0) Small Brown Mushroom
+	(0) Small Ghost Mushroom
+	(0) Small Blue Mushroom
+	(0) Small Purple Mushroom
+	(0) Small Pink Mushroom
+	(0) Small Silver Mushroom
+	(0) Tall Grass
+	(0) Brown Tall Grass
+	(0) Red Daisies
+	(0) Orange Daisies
+	(0) Yellow Daisies
+	(0) Purple Daisies
+	(0) Pink Daisies
+	(0) White Daisies
+	(0) Clover
+	(0) Cactus
+	(0) Clover Small
+	(0) Clover Small Flower
+	(0) Bush Hosta A
+	(0) Bush Hosta B
+	(0) Bush Hosta C
+	(0) Bush Hosta Spotted A
+	(0) Bush Hosta Spotted B
+	(0) Bush Hosta Spotted C
+	(0) Bush Peacock Fern A
+	(0) Bush Peacock Fern B
+	(0) Bush Peacock Fern C
+	(0) Bush ElephantEar A
+	(0) Bush ElephantEar B
+	(0) Bush ElephantEar C
+	(0) Bush Hosta Edged A
+	(0) Bush Hosta Edged B
+	(0) Bush Hosta Edged C
+	(0) Bush Banana A
+	(0) Bush Banana B
+	(0) Bush Banana C
+	(0) Daffodil
+	(0) Bush Paisley Fern A
+	(0) Bush Paisley Fern B
+	(0) Bush Paisley Fern C
+	(0) Prickly Pear Cactus A
+	(0) Shroom Hand
+	(0) Grown Shroom Hand
+	(0) Peacock Fern Leaf
+	(0) Paisley Fern Leaf
+	(0) Elephant Ear Leaf
+	(0) Banana Leaf
+	(0) Reeds
+	(0) Corpse Pitcher Stem
+	(0) Redroot Leaves
+	(0) Greens
+	(0) Iceroot Leaves
+	(0) Hosta Leaf
+	(0) Hosta Edged Leaf
+	(0) Hosta Spotted Leaf
+	(0) Bulb Fern Leaf
+	(0) Tan Thorny Vines
+	(0) Green Thorny Vines
+	(0) Corpse Pitcher Cup
+	(0) Bulb Fern Bulb
+	(0) Red Daisy Petals
+	(0) Orange Daisy Petals
+	(0) Yellow Daisy Petals
+	(0) Purple Daisy Petals
+	(0) Pink Daisy Petals
+	(0) White Daisy Petals
+	(0) Vines
+	(0) Humerus Bone
+	(0) Frond
+	(0) Root Redroot
+	(0) Root Paddlesnip
+	(0) Root Pakroot
+	(0) Root Iceroot
+	(0) Red Apple Seeds
+	(0) Orange Seeds
+	(0) Cherry Seeds
+	(0) Pumpkin Seeds
+	(0) Melon Seeds
+	(0) Purple Gourd Seeds
+	(0) Femur Bone
+	(0) Lilly Pad
+	(0) Lilly Nut
+	(0) Husked Coconut
+	(0) Unripe Redberries
+	(0) Unripe Blueberries
+	(0) Red Mushroom Chunk
+	(0) Orange Mushroom Chunk
+	(0) Brown Mushroom Chunk
+	(0) Ghost Mushroom Chunk
+	(0) Blue Mushroom Chunk
+	(0) Purple Mushroom Chunk
+	(0) Pink Mushroom Chunk
+	(0) Silver Mushroom Chunk
+	(0) Shroom Hand Chunk
+}
+Rock {
+	(1) Rock10 Yellow
+	(1) Rock10 Green
+	(1) Rock10 Blue
+	(1) Rock10 White
+	(1) Knapped Rock Spire
+	(1) Loose Pebbles
+	(2) Snow Mountain Rock Clump
+	(2) Burnt Clump
+	(2) Cobblestone
+	(2) Cliff Rock Dark Clump
+	(2) Cliff Rock Gray Clump
+	(2) Cliff Rock Light Clump
+	(2) Gravel Clump
+	(2) Mesa Rock Clump
+	(2) Painted Rock B Clump
+	(2) Painted Rock D Clump
+	(2) White Mesa Rock Clump
+	(2) Slate Rock A Clump
+	(2) Slate Rock B Clump
+	(2) Slate Rock C Clump
+	(2) Carved Rock Blue Clump
+	(2) Carved Rock Gray Clump
+	(2) Carved Rock Grn Clump
+	(2) Rock06 Blue
+	(2) Rock06 White
+	(2) Rock05 Green
+	(2) Rock05 White
+	(2) Rock08 Yellow
+	(2) Rock08 Green
+	(2) Rock08 Blue
+	(2) Rock08 White
+	(2) Rock04 Yellow
+	(2) Rock04 Green
+	(2) Rock04 White
+	(2) Rock02 Yellow
+	(2) Rock02 Green
+	(2) Rock02 Blue
+	(2) Rock02 White
+	(2) Ice Knoll B
+	(2) Ice Knoll A
+	(2) Rock07 Yellow
+	(2) Rock07 Green
+	(2) Rock07 Blue
+	(2) Rock07 White
+	(2) Yellow Boulder
+	(2) Green Boulder
+	(2) Blue Boulder
+	(2) White Boulder
+	(2) Copper Ore
+	(2) Tin Ore
+	(2) Mesa Rock
+	(2) Gravel
+	(2) Painted Rock D
+	(2) Painted Rock B
+	(2) Cliff Rock Light
+	(2) Cliff Rock Gray
+	(2) Cliff Rock Dark
+	(2) Coal Burn
+	(2) Cobblestone Multi
+	(2) Burnt
+	(3) Cobblestone Gray Clump
+	(3) Cobblestone Blue Clump
+	(3) Cobblestone Green Clump
+	(3) Stone Lion Broken
+	(3) Ruby Spire
+	(3) Topaz Spire
+	(3) Firestone Spire
+	(3) Citrine Spire
+	(3) Peridot Spire
+	(3) Blue Crystal Spire
+	(3) Froststone Spire
+	(3) Sapphire Spire
+	(3) Amethyst Spire
+	(3) Ruby Cluster
+	(3) Topaz Cluster
+	(3) Firestone Cluster
+	(3) Citrine Cluster
+	(3) Peridot Cluster
+	(3) Blue Crystal Cluster
+	(3) Froststone Cluster
+	(3) Sapphire Cluster
+	(3) Amethyst Cluster
+	(3) Black Rock
+	(3) Ruby Shard
+	(3) Topaz Shard
+	(3) Firestone Shard
+	(3) Citrine Shard
+	(3) Peridot Shard
+	(3) Blue Crystal Shard
+	(3) Froststone Shard
+	(3) Sapphire Shard
+	(3) Amethyst Shard
+	(3) Limestone
+	(3) Ruins Wall
+	(3) Ruins Blocks
+	(3) Cobblestone Green
+	(3) Cobblestone Gray
+	(3) Cobblestone Blue
+	(3) Crafting Rock
+	(4) Rock Clump
+	(4) Thin Obelisk
+	(4) Ruins Wall01
+	(4) Ruins Wall Chunk
+	(4) Ruins Arch01
+	(4) Ruins Rectangle Obelisk
+	(4) Ruins Pointed Obelisk
+	(4) Ruins Rock Large
+	(4) Large Obelisk
+	(4) Stone Lion
+	(4) Giant Obelisk
+	(4) Rock03 Grey
+	(4) Rock
+	(9) Obsidian Clump
+	(9) Obsidian
+	(0) Rock06 Yellow
+	(0) Rock06 Green
+	(0) Rock06 Grey
+	(0) Rock05 Yellow
+	(0) Rock05 Blue
+	(0) Rock05 Grey
+	(0) Rock08 Grey
+	(0) Rock04 Blue
+	(0) Rock04 Grey
+	(0) Rock03 Yellow
+	(0) Rock03 Green
+	(0) Rock03 Blue
+	(0) Rock03 White
+	(0) Rock02 Grey
+	(0) Rock10 Grey
+	(0) Rock09 Yellow
+	(0) Rock09 Green
+	(0) Rock09 Blue
+	(0) Rock09 White
+	(0) Rock09 Grey
+	(0) Rock01 Yellow
+	(0) Rock01 Green
+	(0) Rock01 Blue
+	(0) Rock01 White
+	(0) Rock01 Grey
+	(0) Rock07 Grey
+	(0) Gray Boulder
+	(0) Gold Ore
+	(0) Iron Ore
+	(0) Silver Ore
+	(0) Flint Head
+	(0) Flat Rock
+	(0) Snow Mountain Rock
+	(0) Slate Rock C
+	(0) White Mesa Rock
+	(0) Slate Rock B
+	(0) Slate Rock A
+	(0) Carved Rock Grn
+	(0) Carved Rock Gray
+	(0) Carved Rock Blue
+}
+Axe {
+	(1) Jagged Rock
+	(1) Bronze Axe
+	(2) Growing Red Berry
+	(2) Growing Blue Berry
+	(2) Crude Axe
+}
+Coal {
+	(2) Coal
+	(3) Coal Burn Clump
+}
+Pick {
+	(1) Small Rock Spire
+	(1) Bronze Pick
+	(1) Bronze Chisel
+	(2) Crude Pick
+}
+Torch {
+	(2) Large Torch
+	(2) Small Torch
+	(2) Fire Pit
+}
+Table {
+	(2) Bamboo Table
+	(2) Pumpkin Cauldron
+	(2) Crude Workbench
+	(3) Stone Furnace
+	(3) Stone Anvil
+	(3) Sandcast Mold
+	(3) Loom
+	(3) Artisan Workbench
+	(3) Alchemy Table
+}
+Gear {
+	(3) Leather Bridle
+	(3) Bronze Neck Strand
+	(3) Leather Saddle
+	(3) Small Wood Shield
+	(3) Wool Breeches
+	(3) Wool Shirt
+	(3) Leather Pads
+	(3) Linen Tunic
+	(3) Linen Arm Wraps
+	(3) Bronze Skull Cap
+	(3) Copper Necklace
+	(3) Bronze Plated Glove
+	(2) Vine Collar
+	(2) Hide Vest
+	(2) Goat Skins
+	(2) Bamboo Vest
+	(2) Bone Necklace
+	(2) Wood Bracers
+	(2) Wood Kneepads
+	(2) Pumpkin Helmet
+	(2) Pumpkin Skull Cap
+	(0) Leaf Backpack
+	(0) Leaf Vest
+	(0) Vine Arm Wraps
+	(0) Bamboo Bracers
+	(0) Bamboo Anklets
+}
+Shovel {
+	(1) Bronze Trowel
+	(1) Bronze Shovel
+	(2) Crude Shovel
+}
+Meat {
+	(2) Raw Meat
+	(2) Cooked Meat
+	(0) Animal Intestine
+}
+Container {
+	(2) Gourd Flask
+}
+Knife {
+	(1) Bronze Knife
+	(2) Crude Knife
+}
+ {
+	(1) Survival Center Medium
+	(1) Shroom Hand Growth Controller
+	(1) Mushrooom Hand Growth Controller
+	(1) Red Mushroom Growth Controller
+	(1) Red Fungi Growth Controller
+	(1) Purple Mushroom Growth Controller
+	(1) Purple Fungi Growth Controller
+	(1) Purple Gourd Vine Growth Controller
+	(1) Purple Gourd Growth Controller
+	(1) Silver Mushroom Growth Controller
+	(1) Silver Fungi Growth Controller
+	(1) Pumpkin Vine Growth Controller
+	(1) Pumpkin Growth Controller
+	(1) Model Viewer Axis
+	(1) Orange Tree Growth Controller
+	(1) Orange Growth Controller
+	(1) World Center
+	(1) Survival Center Small
+	(1) Melon Vine Growth Controller
+	(1) Melon Growth Controller
+	(1) Survival Center Large
+	(1) Ghost Mushroom Growth Controller
+	(1) Ghost Fungi Growth Controller
+	(1) Pink Mushroom Growth Controller
+	(1) Pink Fungi Growth Controller
+	(1) Cherry Tree Growth Controller
+	(1) Cherry Growth Controller
+	(1) Brown Mushroom Growth Controller
+	(1) Brown Fungi Growth Controller
+	(1) Blue Mushroom Growth Controller
+	(1) Blue Fungi Growth Controller
+	(1) Orange Mushroom Growth Controller
+	(1) Orange Fungi Growth Controller
+	(1) Spawn Point
+	(1) Mushroom Man Spawn Node
+	(1) Coconut Tree Growth Controller
+	(1) Coconut Growth Controller
+	(1) Goat Spawn Node
+	(1) MamaGoat Spawn Node
+	(1) Kid Spawn Node
+	(1) BearRam Spawn Node
+	(1) BearRamCub Spawn Node
+	(1) Cat Spawn Node
+	(1) MamaCat Spawn Node
+	(1) SaberCub Spawn Node
+	(1) Red Apple Tree Growth Controller
+	(1) Apple Growth Controller
+	(1) Banana Growth Controller
+	(1) Tree Growth Controller
+	(1) Cabbage Trap Growth Controller
+	(1) CompositeObject
+	(-1) Leather Wrap Proxy
+	(-1) Scoreboard
+	(-1) ItemContainer
+	(-1) InfiniteItemContainer
+	(-1) CharacterGear
+	(-1) NetworkedItemContainer
+	(-1) HandslotItemContainer
+	(-1) Lighting Controller
+	(-1) Billboard Culling Controller
+	(-1) Woven Basket Top
+	(-1) Crude Chest Top
+	(-1) Leaf Backpack Top
+	(-1) Player Hand
+	(-1) Dev Player
+	(-1) Mushroom Man
+	(-1) Mad Mushroom Man
+	(-1) PetKid
+	(-1) MamaGoat
+	(-1) Kid
+	(-1) GuardianGoat
+	(-1) Goat
+	(-1) Wisp
+	(-1) Saber Cub
+	(-1) PetCub
+	(-1) Corax
+	(-1) Creative Network Player
+	(-1) Creative Local Player
+	(-1) Survival Player Controller
+	(-1) Player Controller
+	(-1) Player Collider
+	(-1) Network Authority Controller
+	(-1) Networked Player Controller
+	(-1) Local Player
+	(-1) Network Player
+	(-1) Player Seedling Male
+	(-1) PetCogat
+	(-1) MamaCat
+	(-1) GuardianCat
+	(-1) Cat
+	(-1) BearRam Cub
+	(-1) BearRam
+	(-1) Wisp Attractor
+	(-1) Test Attractor
+	(-1) Poison Potion Attractor
+	(-1) Freeze Blast Attractor
+	(-1) FireBall Hand Attractor
+	(-1) FireBall Attractor
+	(-1) Exploding Pumpkin Attractor
+	(-1) DeathAura Attractor
+	(-1) Torch Attractor
+	(-1) Bone Attractor
+	(-1) Alchemy Crafting Attractor
+	(-1) Ball Emitter
+	(-1) Strike WoodFruit Emitter
+	(-1) Strike WoodHard Emitter
+	(-1) Strike WoodLight Emitter
+	(-1) Strike Pumpkin Emitter
+	(-1) Strike Mushroom Emitter
+	(-1) Strike VegChunkLt Emitter
+	(-1) Strike VegChunkGrn Emitter
+	(-1) Strike Juice Emitter
+	(-1) Strike Water Emitter
+	(-1) Strike GourdGoo Emitter
+	(-1) Strike Growth Juice Emitter
+	(-1) Strike Sand Emitter
+	(-1) Strike Sand VxHalf Emitter
+	(-1) Strike LeafPalmateGreen Emitter
+	(-1) Strike LeafLinearGreen Emitter
+	(-1) Strike LeafEllipticOrange Emitter
+	(-1) Strike LeafEllipticGold Emitter
+	(-1) Strike LeafEllipticGreen Emitter
+	(-1) Strike LeafRedroot Emitter
+	(-1) Strike LeafPaddlesnip Emitter
+	(-1) Strike LeafPakroot Emitter
+	(-1) Strike LeafIceroot Emitter
+	(-1) Strike LeafAcicularGreen Emitter
+	(-1) Strike GrassA Emitter
+	(-1) Strike GrassB Emitter
+	(-1) Strike GrassC Emitter
+	(-1) Strike Rock Yellow Emitter
+	(-1) Strike Rock Green Emitter
+	(-1) Strike Rock Green VxHalf Emitter
+	(-1) Strike Rock Blue Emitter
+	(-1) Strike Rock Blue VxHalf Emitter
+	(-1) Strike Rock White Emitter
+	(-1) Strike Rock Grey Emitter
+	(-1) Strike Rock Grey VxHalf Emitter
+	(-1) Strike Rock Black Emitter
+	(-1) Strike Rock Black VxHalf Emitter
+	(-1) Strike Rock Alchemy Emitter
+	(-1) Strike HerbWheat Emitter
+	(-1) Strike HerbCotton Emitter
+	(-1) Strike Petal Red Emitter
+	(-1) Strike Petal Orange Emitter
+	(-1) Strike Petal Yellow Emitter
+	(-1) Strike Petal Purple Emitter
+	(-1) Strike Petal Pink Emitter
+	(-1) Strike Petal White Emitter
+	(-1) Strike MoteRed Emitter
+	(-1) Strike MoteGold Emitter
+	(-1) Strike MoteGreen Emitter
+	(-1) Strike MoteAqua Emitter
+	(-1) Strike HerbBluebonnet Emitter
+	(-1) Strike Glint Emitter
+	(-1) Strike FurBrown Emitter
+	(-1) Strike Dirt Emitter
+	(-1) Strike Dirt VxHalf Emitter
+	(-1) Strike LeafBipinnateGreen Emitter
+	(-1) Strike LeafBanana Emitter
+	(-1) Strike LeafEleEar Emitter
+	(-1) Strike LeafHosta Emitter
+	(-1) Strike LeafHostaEdged Emitter
+	(-1) Strike LeafHostaSpotted Emitter
+	(-1) Strike LeafFernPaisley Emitter
+	(-1) Strike LeafFernPeacock Emitter
+	(-1) Strike LeafFrond Emitter
+	(-1) Strike LeafLotusTeeth Emitter
+	(-1) Strike Ruby Emitter
+	(-1) Strike Topaz Emitter
+	(-1) Strike Citrine Emitter
+	(-1) Strike Peridot Emitter
+	(-1) Strike BlueCrystal Emitter
+	(-1) Strike Sapphire Emitter
+	(-1) Strike Amethyst Emitter
+	(-1) Strike Ruby Broken Energy Emitter
+	(-1) Strike Topaz Broken Energy Emitter
+	(-1) Strike Citrine Broken Energy Emitter
+	(-1) Strike Peridot Broken Energy Emitter
+	(-1) Strike BlueCrystal Broken Energy Emitter
+	(-1) Strike Ice Broken Energy Emitter
+	(-1) Strike Sapphire Broken Energy Emitter
+	(-1) Strike Amethyst Broken Energy Emitter
+	(-1) Strike LeafCordateGold Emitter
+	(-1) Strike LeafCordateGreen Emitter
+	(-1) Strike Cactus Emitter
+	(-1) Strike Clay Emitter
+	(-1) Strike ClayRed Emitter
+	(-1) Strike ClayOrange Emitter
+	(-1) Strike ClayYellow Emitter
+	(-1) Strike ClayLime Emitter
+	(-1) Strike ClayGreen Emitter
+	(-1) Strike ClayCyan Emitter
+	(-1) Strike ClayLtBlue Emitter
+	(-1) Strike ClayBlue Emitter
+	(-1) Strike ClayBlurple Emitter
+	(-1) Strike ClayPurple Emitter
+	(-1) Strike ClayMagenta Emitter
+	(-1) Strike ClayPink Emitter
+	(-1) Strike ClayBrown Emitter
+	(-1) Strike ClayWhite Emitter
+	(-1) Strike ClayLtGrey Emitter
+	(-1) Strike ClayGrey Emitter
+	(-1) Strike ClayBlack Emitter
+	(-1) Strike LeafGourdGreen Emitter
+	(-1) Strike LeafLobedOlive Emitter
+	(-1) Strike LeafTrifoliateGreen Emitter
+	(-1) Slingshot Stone Break Emitter
+	(-1) Strike Gourd Emitter
+	(-1) Strike Snow Emitter
+	(-1) Strike Snow VxHalf Emitter
+	(-1) Strike EmbersQuarter Emitter
+	(-1) Mining Emitter
+	(-1) Nesting Spawn Emitter
+	(-1) Default Pet Equip Emitter
+	(-1) Default Pet Taming Emitter
+	(-1) Default Pet Tamed Emitter
+	(-1) Return Emitter
+	(-1) Return Emitter Stripe
+	(-1) Geyser Emitter
+	(-1) Steam Quarter Emitter
+	(-1) Steam Half Emitter
+	(-1) Froth Blue 1 Emitter
+	(-1) Froth Blue Rise 1 Emitter
+	(-1) Froth Blue Quarter Emitter
+	(-1) Froth Orange Quarter Emitter
+	(-1) Froth Yellow Quarter Emitter
+	(-1) Froth Red Quarter Emitter
+	(-1) Smoke Quarter Emitter
+	(-1) Smoke Half Emitter
+	(-1) Smoke 1 Emitter
+	(-1) Flames Half Emitter
+	(-1) Flames 1 Emitter
+	(-1) Mist 1 Emitter
+	(-1) Fire Quarter Emitter
+	(-1) Fire Half Emitter
+	(-1) Fire 1 Emitter
+	(-1) Up Pollen Pink Emitter
+	(-1) Roam Firefly Yellow Emitter
+	(-1) Roam Firefly Green Emitter
+	(-1) Roam Firefly Aqua Emitter
+	(-1) Roam Fly Emitter
+	(-1) Roam Fly Spiked Pit Trap Emitter
+	(-1) Gust Wind Snow Emitter
+	(-1) Float LeafTrifoliateGreen Emitter
+	(-1) Float LeafLobedOlive Emitter
+	(-1) Drift Wind Snow Emitter
+	(-1) Drift Wind Fog Emitter
+	(-1) Drift Petal Red Emitter
+	(-1) Drift Petal Orange Emitter
+	(-1) Drift Petal Yellow Emitter
+	(-1) Drift Petal Purple Emitter
+	(-1) Drift Petal White Emitter
+	(-1) Drift Petal Pink Emitter
+	(-1) Gust Wind Fog Emitter
+	(-1) Drift Palmate Green Leaf Emitter
+	(-1) Drift MoteMushroomRed Emitter
+	(-1) Drift MoteMushroomGold Emitter
+	(-1) Drift MoteMushroomGreen Emitter
+	(-1) Drift MoteMushroomAqua Emitter
+	(-1) Drift Cordate Gold Leaf Giant Emitter
+	(-1) Drift Cordate Green Leaf Giant Emitter
+	(-1) Drift LeafAcicularGreen Emitter
+	(-1) Drift Elliptic Gold Leaf Emitter
+	(-1) Drift Elliptic Green Leaf Emitter
+	(-1) Drift Fungal Gas Mist Emitter
+	(-1) Drift Fungal Gas Seep Small Emitter
+	(-1) Drift Fungal Gas Seep Large Emitter
+	(-1) Drift Fungal Gas Explode Small Emitter
+	(-1) Drift Fungal Gas Explode Large Emitter
+	(-1) Drift Fungal Gas Cloud Large Emitter
+	(-1) Drift FluffyDown Emitter
+	(-1) Drift Wind Sand Red Emitter
+	(-1) Drift Wind Sand Yellow Emitter
+	(-1) Drift Fluff Emitter
+	(-1) Up DoubleCap Fluff Glow Emitter
+	(-1) Gust Wind Sand Red Emitter
+	(-1) Gust Wind Sand Yellow Emitter
+	(-1) Drift LeafCageTrap Emitter
+	(-1) Drift LeafCageTrap2 Emitter
+	(-1) Wisp Blue Body Emitter
+	(-1) Wisp Blue Tail Emitter
+	(-1) Wisp Blue Ribbon Emitter
+	(-1) Swarm Alchemy Crafting Emitter
+	(-1) Swarm Alchemy Absorb Emitter
+	(-1) Seed Float Emitter
+	(-1) Projectile Ribbon Emitter
+	(-1) Light Aura Orange Emitter
+	(-1) Swarm Firefly Orange Emitter
+	(-1) Swarm Firefly Yellow Emitter
+	(-1) Swarm Firefly Green Emitter
+	(-1) Swarm Firefly Aqua Emitter
+	(-1) Swarm Firefly Pink Emitter
+	(-1) Swarm Fly Emitter
+	(-1) Grow LeafGourd Green Emitter
+	(-1) Fruit LeafElliptic Green Emitter
+	(-1) Default Planting Emitter
+	(-1) Spawn Goat Emitter
+	(-1) Default Fruit Emitter
+	(-1) Grow LeafElliptic Green Emitter
+	(-1) Default Equip Emitter
+	(-1) Default Crafting Emitter
+	(-1) Stone Break Ice Emitter
+	(-1) Stone Break Fire Emitter
+	(-1) Magic FireBall Hand Emitter
+	(-1) Magic FireBall Emitter
+	(-1) Magic FireBall Trail Emitter
+	(-1) Magic FireBall Burst Emitter
+	(-1) Magic FireBall Explosion Emitter
+	(-1) Magic FireBall Burnt Emitter
+	(-1) Magic FireBall Burnt Seed Emitter
+	(-1) No Magic Fire Emitter
+	(-1) Magic Ice Cone Emitter
+	(-1) Magic Ice Cloud Emitter
+	(-1) Magic Ice Cloud Seed Emitter
+	(-1) No Magic Ice Emitter
+	(-1) Combat Hit HP Emitter
+	(-1) Death Aura Emitter
+	(0) Cage Trap Camo
+	(0) Exploding Pumpkin Chunk1
+	(0) Exploding Pumpkin Chunk2
+	(0) Exploding Pumpkin Chunk3
+	(0) Exploding Pumpkin Chunk4
+}
+Edible {
+	(0) Green Vine
+	(0) Green Vine Melons
+	(0) Green Vine Pumpkins
+	(0) Gourd Vine
+	(0) Gourd Vine Shoots
+	(0) Gourd Vine Buds
+	(0) Gourd Vine Shoots With No Emissive
+	(0) Gourd Vine Buds With No Emissive
+	(0) Drivy Large Cluster
+	(0) Drivy Small Cluster
+	(0) Drivy Large Cluster 4 Pink Flowers
+	(0) Drivy Large Cluster 3 Pink Flowers
+	(0) Drivy Large Cluster 3 Yellow Flowers
+	(0) Drivy Large Cluster 4 Yellow Flowers
+	(0) Drivy Small Cluster 1 Yellow Flower
+	(0) Drivy Small Cluster 2 Yellow Flowers
+	(0) Drivy Small Cluster 1 Pink Flower
+	(0) Drivy Multi Cluster 1 Pink Flower
+	(0) Drivy Multi Cluster 2 Pink Flowers
+	(0) Drivy Large Multi Cluster 1 Pink Flower
+	(0) Drivy Multi Cluster 5 Yellow Flowers
+	(0) Drivy Multi Cluster 3 Yellow Flowers
+	(0) Scrub Brush
+	(0) Winter Scrub Brush
+	(0) Bush Young
+	(0) Bush Sprout
+	(0) Polar Bush Young
+	(0) Polar Bush Sprout
+	(0) Melon
+	(0) Purple Gourd
+	(0) Coconut
+	(0) Cherries
+	(0) Orange
+	(0) Redberries
+	(0) Blueberries
+	(0) Orange Pumpkin
+	(0) Banana
+	(0) Red Apple
+	(2) Coconut Shell
+	(2) Bush Berry
+	(2) Redberry Bush
+	(2) Polar Redberry Bush
+	(2) Blueberry Bush
+	(2) Polar Blueberry Bush
+	(2) Coconut Half
+	(4) Unripe Banana
+}
+Magic {
+	(3) Return Stone
+}
+Bed {
+	(2) Mushroom Bed
+	(2) Crude Bed
+}
+Fence {
+	(0) Vine Fence
+}
+Door {
+	(3) Wooden Door
+	(2) Crude Door
+}
+Powder {
+	(2) Wood Chips
+	(2) Bone Powder
+	(2) Tooth Powder
+}
+Trap {
+	(2) Spiked Pit Trap
+	(2) Vine Fence Cage
+	(2) Pumpkin Trap
+}
+Hammer {
+	(1) Round Rock
+	(1) Bronze Hammer
+	(2) Crude Hammer
+}
+Dirt {
+	(1) Snow Clump
+	(2) Frozen Mud Clump
+	(2) Dark Green Pasture Clump
+	(2) Green Hills Clump
+	(2) Clay Clump
+	(2) Clay Hills Clump
+	(2) Clay Yellow Clump
+	(2) Dirt Clump
+	(2) Swamp Dirt Clump
+	(2) Forest Mountain Dirt Clump
+	(2) Swamp Moss Clump
+	(2) Forest Mountain Moss Clump
+	(2) Forest Mountain Mud Clump
+	(2) Sand Clump
+	(2) White Sand Mesa Clump
+	(2) Swamp Dirt
+	(2) Forest Mountain Mud
+	(2) White Sand Mesa
+	(2) Swamp Moss
+	(2) Forest Mountain Dirt
+	(2) Dirt
+	(2) Sand
+	(2) Forest Mountain Moss
+	(2) Clay
+	(2) Clay Hills
+	(2) Snow
+	(2) Green Hills
+	(2) Dark Green Pasture
+	(3) Clay Brick
+	(3) Clay Black Clump
+	(3) Clay Blue Clump
+	(3) Clay Brown Clump
+	(3) Clay Cyan Clump
+	(3) Clay Gray Clump
+	(3) Clay Green Clump
+	(3) Clay Light Blue Clump
+	(3) Clay Light Purple Clump
+	(3) Clay Light Gray Clump
+	(3) Clay Magenta Clump
+	(3) Clay Pink Clump
+	(3) Clay Orange Clump
+	(3) Clay Lime Clump
+	(3) Clay Red Clump
+	(3) Clay Purple Clump
+	(3) Clay White Clump
+	(3) Clay Yellow
+	(3) Clay Purple
+	(3) Clay Pink
+	(3) Clay Red
+	(3) Clay Magenta
+	(3) Clay Lime
+	(3) Clay Light Purple
+	(3) Clay Light Gray
+	(3) Clay Green
+	(3) Clay Blue
+	(3) Clay Cyan
+	(3) Clay Black
+	(3) Clay Orange
+	(3) Clay Block
+	(3) Clay Light Blue
+	(3) Clay White
+	(3) Clay Brown
+	(3) Clay Gray
+	(0) Mossy Dirt Clump
+	(0) Mud Clump
+	(0) Mud
+	(0) Mossy Dirt
+	(0) Frozen Mud
+}
+Flesh {
+	(3) Leather Patch
+	(2) Leather Strips
+	(2) Tooth
+	(2) Goat Skull
+	(2) Animal Horn
+	(2) Animal Hide
+	(0) Fossilized Tooth
+	(0) Scallop Shell
+	(0) Yellow Canine Tooth
+	(0) Ancient Tooth
+}
+Cloth {
+	(3) Linen Textile White
+	(3) Linen Textile Plain
+	(3) Linen Textile Black
+	(3) Linen Textile Green
+}
+Grass {
+	(2) Dark Green Grass Clump
+	(2) Light Green Grass Clump
+	(2) Dark Terrace Grass Clump
+	(2) Dark Mountain Grass Clump
+	(2) Mountain Grass Clump
+	(2) Green Terrace Grass Clump
+	(2) Mountain Green Grass Clump
+	(2) Forest Tall Grass Clump
+	(2) Tan Grass Clump
+	(2) Tan Swamp Grass Clump
+	(2) Swamp Tall Grass Clump
+	(2) Savannah Grass Clump
+	(2) Forest Ground Clump
+	(2) Sand Grass Clump
+	(2) Bluebonnet Clump
+	(2) Cotton Clump
+	(2) Wheat Clump
+	(2) Oats Clump
+	(2) Tan Swamp Grass
+	(2) Tan Grass
+	(2) Swamp Tall Grass
+	(2) Sand Grass
+	(2) Light Green Grass
+	(2) Green Terrace Grass
+	(2) Mountain Grass
+	(2) Grass with Wheat
+	(2) Grass with Oat
+	(2) Grass with Bluebonnets
+	(2) Forest Tall Grass
+	(2) Forest Ground
+	(2) Grass with Cotton
+	(2) Dark Terrace Grass
+	(2) Dark Mountain Grass
+	(2) Mountain Green Grass
+	(2) Dark Green Grass
+	(2) Tan Swamp Grass Swap
+	(2) Swamp Tall Grass Swap
+	(2) Sand Grass Swap
+	(2) Mountain Green Grass Swap
+	(2) Green Terrace Grass Swap
+	(2) Tan Grass Swap
+	(2) Mountain Grass Swap
+	(2) Grass with Wheat Swap
+	(2) Grass with Oat Swap
+	(2) Grass with Cotton Swap
+	(2) Grass with Bluebonnets Swap
+	(2) Forest Ground Swap
+	(2) Dark Terrace Grass Swap
+	(2) Dark Mountain Grass Swap
+	(2) Dark Green Grass Swap
+	(2) Forest Tall Grass Swap
+	(2) Light Green Grass Swap
+	(0) Terrace Grass Clump
+	(0) Savannah Grass
+	(0) Terrace Grass
+	(0) Savannah Grass Swap
+	(0) Terrace Grass Swap
+}
+Metal {
+	(3) Latten
+	(3) Bronze Sword Blade
+	(3) Bronze Shovel Head
+	(3) Bronze Knife Blade
+	(3) Bronze Pick Head
+	(3) Bronze Headshell
+	(3) Bronze Glove Plate
+	(3) Bronze Spear Head
+	(3) Bronze Hammer Head
+	(3) Bronze Chestplate
+	(3) Bronze Cudgel Head
+	(3) Bronze Buckle
+	(3) Bronze Hoe Head
+	(3) Bronze Axe Head
+	(3) Bronze Chunks
+	(3) Ice Blast Neuria Gauntlet
+	(3) Fireball Neuria Gauntlet
+}
+None {
+	(0) Return Stone FX
+	(0) Roaming Fly
+	(0) Gusting Sand Red
+	(0) Gusting Sand Yellow
+	(0) Gusting Snow
+	(0) Gusting Fog
+	(0) Drifting Sand Red
+	(0) Drifting Sand Yellow
+	(0) Drifting Snow
+	(0) Drifting Fog
+}

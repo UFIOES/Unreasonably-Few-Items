@@ -1,16 +1,17 @@
 
 include("Scripts/UI/View.lua")
---include("Scripts/RecipeItemView.lua")
+include("Scripts/UI/RecipeItemView.lua")
+include("Scripts/objects/Equipable.lua")
+include("Scripts/UI/TechTreeView.lua")
 
 local Windows = nil
 local UISystem = nil
-
--- get an Schematic with invalid name
-local nullSchematic = Eternus.GameObjectSystem:NKFindObjectSchematicByName("_NULL_null_000")
+local Animations = nil
 
 if Eternus.IsClient then -- These are not used in a dedicated server environment
 	Windows	= EternusEngine.UI.Windows
 	UISystem = EternusEngine.UI.System
+	Animations = EternusEngine.UI.Animations
 end
 
 
@@ -27,7 +28,7 @@ RecipeView.ALPHA_INVISIBLE = "tl:00FFFFFF tr:00FFFFFF bl:00FFFFFF br:00FFFFFF"
 
 function RecipeView:PostLoad(layout, controller)
 
-	self.recipeScrollpane = CEGUI.toScrollablePane(self:GetChild("Recipes"))
+	self.recipeScrollpane = CEGUI.toScrollablePane(self:GetChild("RecipesFrame"):getChild("Recipes"))
 	self.recipeScrollpane:setShowHorzScrollbar(false)
 
 	self.recipeContext = InputMappingContext.new("Recipies")
@@ -38,7 +39,7 @@ function RecipeView:PostLoad(layout, controller)
 
 	self.recipeContext:NKRegisterNamedCommand("Toggle Recipe Interface", self, "ToggleInterface", KEY_ONCE)
 
-	self.searchbox = CEGUI.toEditbox(self:GetChild("Searchbox"))
+	self.searchbox = CEGUI.toEditbox(self:GetChild("RecipesFrame"):getChild("Searchbox"))
 
 	self.searchContext = InputMappingContext.new("Searchbox")
 
@@ -46,55 +47,69 @@ function RecipeView:PostLoad(layout, controller)
 
 	self.searchContext:NKRegisterNamedCommand("Return to Menu", self, "OnSearchboxExit", KEY_ONCE)
 
-	self.cheatModeButton = CEGUI.toToggleButton(self:GetChild("CheatMode"))
+	self.cheatModeButton = CEGUI.toToggleButton(self:GetChild("OptionsFrame"):getChild("CheatMode"))
 
-	self.discoveryModeButton = CEGUI.toToggleButton(self:GetChild("DiscoveryMode"))
+	self.discoveryModeButton = CEGUI.toToggleButton(self:GetChild("OptionsFrame"):getChild("DiscoveryMode"))
+
+	self.mouseCycleModeButton = CEGUI.toToggleButton(self:GetChild("OptionsFrame"):getChild("MouseCycleMode"))
 
 	self.cheatMode = false
 
 	self.descoveryMode = true
 
+	self.mouseCycleMode = true
+
 	self.searching = false
+
+	self.iconUpdateTime = 0
+
 --[[
 	EternusEngine.UI.Layers.Gameplay:subscribeEvent("CaptureLost", function(args)
-		if self.m_active then
+		if self.active then
 			self:ToggleInterface()
 		end
 	end)
 ]]
+
 	self.cheatModeButton:subscribeEvent("SelectStateChanged", function(args)
-		if self.m_active then
+		if self.active then
 			self.cheatMode = not self.cheatMode
 		end
 	end)
 
 	self.discoveryModeButton:subscribeEvent("SelectStateChanged", function(args)
-		if self.m_active then
+		if self.active then
 			self.descoveryMode = not self.descoveryMode
 			self:OnTextChanged()
 		end
 	end)
 
+	self.mouseCycleModeButton:subscribeEvent("SelectStateChanged", function(args)
+		if self.active then
+			self.mouseCycleMode = not self.mouseCycleMode
+		end
+	end)
+
 	self.searchbox:subscribeEvent("MouseClick", function(args)
-		if self.m_active then
+		if self.active then
 			self:OnSearchboxClicked()
 		end
 	end)
 
 	self.searchbox:subscribeEvent("TextChanged", function(args)
-		if self.m_active then
+		if self.active then
 			self:OnTextChanged()
 		end
 	end)
 
 	self.searchbox:subscribeEvent("Deactivated", function(args)
-		if self.m_active then
+		if self.active then
 			self:OnSearchboxDeactivated()
 		end
 	end)
 
 	self.searchbox:subscribeEvent("TextAccepted", function(args)
-		if self.m_active then
+		if self.active then
 			self:OnSearchboxExit()
 		end
 	end)
@@ -102,23 +117,103 @@ function RecipeView:PostLoad(layout, controller)
 	self.recipesList = Windows:createWindow("VerticalLayoutContainer")
 
 	self.recipesList:setProperty("DistributeCapturedInputs", "true")
-	self.recipesList:setProperty("MouseInputPropagationEnabled", "true")
+	self.recipesList:setProperty("MouseInputPropagationEnabled", "false")
 
 	self.recipeScrollpane:addChild(self.recipesList)
 
-	self.m_controller = controller
+	self.controller = controller
 
 	self.layout = layout
 
-	self.m_tooltip = CEGUI.toTooltip(Windows:createWindow("TUGLook/Tooltip"))
-	self.m_active = false
-	self.m_currentWindow = nil
+	self.tooltip = CEGUI.toTooltip(Windows:createWindow("TUGLook/Tooltip"))
+	self.active = false
+	self.currentWindow = nil
 
-	EternusEngine.UI.Layers.Gameplay:addChild(self.m_tooltip)
+	EternusEngine.UI.Layers.Gameplay:addChild(self.tooltip)
+
+	if not Animations:getAnimation("moveRight") then
+
+		self.moveRight = {}
+
+		self.moveRight.animation = Animations:createAnimation("moveRight")
+
+		self.moveRight.animation:setDuration(0.125)
+
+		self.moveRight.animation:setReplayMode(CEGUI.Animation.RM_Once)
+
+		self.moveRight.affector = self.moveRight.animation:createAffector("Position", "UVector2")
+
+		self.moveRight.affector:setApplicationMethod(CEGUI.Affector.AM_Relative)
+
+		self.moveRight.affector:createKeyFrame(0, "{{0, 0}, {0, 0}}")
+
+		self.moveRight.affector:createKeyFrame(0.125, "{{0, 8}, {0, 0}}", CEGUI.KeyFrame.P_QuadraticAccelerating)
+
+		self.moveLeft = {}
+
+		self.moveLeft.animation = Animations:createAnimation("moveLeft")
+
+		self.moveLeft.animation:setDuration(0.125)
+
+		self.moveLeft.animation:setReplayMode(CEGUI.Animation.RM_Once)
+
+		self.moveLeft.affector = self.moveLeft.animation:createAffector("Position", "UVector2")
+
+		self.moveLeft.affector:setApplicationMethod(CEGUI.Affector.AM_Relative)
+
+		self.moveLeft.affector:createKeyFrame(0, "{{0, 0}, {0, 0}}")
+
+		self.moveLeft.affector:createKeyFrame(0.125, "{{0, -8}, {0, 0}}", CEGUI.KeyFrame.P_QuadraticDecelerating)
+
+	else
+
+		self.moveRight = {}
+
+		self.moveRight.animation = Animations:getAnimation("moveRight")
+
+		self.moveLeft = {}
+
+		self.moveLeft.animation = Animations:getAnimation("moveLeft")
+
+	end
+
+	self.tabs = {}
+
+	self:AddTab("All")
+
+	self:AddTab("Tools")
+
+	self:AddTab("Repair")
+
+	self:AddTab("Decor")
+
+	self:AddTab("Misc")
 
 	self:LoadRecipes()
 
 	self:LayoutAllRecipes()
+
+end
+
+function RecipeView:Update(dt)
+
+	self.iconUpdateTime = self.iconUpdateTime + dt
+
+	if self.iconUpdateTime > 1 then
+
+		for i, recipe in pairs(self.recipes) do
+
+			recipe:Update()
+
+			CEGUI.toHorizontalLayoutContainer(recipe.data):layout()
+
+		end
+
+		CEGUI.toVerticalLayoutContainer(self.recipesList):layout()
+
+		self.iconUpdateTime = 0
+
+	end
 
 end
 
@@ -145,27 +240,15 @@ function RecipeView:SpawnComponents(recipe)
 
 				local component = parts["default"]
 
-				if component == "Long Shaft" then
-					component = "Wood Shaft"
-				elseif component == "Crystal Shard" then
-					component = "Blue Crystal Shard"
-				elseif component == "Spear" then
-					component = "Wood Spear"
-				elseif component == "Wood Log" then
-					component = "Wood Log Pine"
-				elseif component == "Dark Green Clump" then
-					component = "Dark Green Grass Clump"
-				elseif component == "Light Green Clump" then
-					component = "Light Green Grass Clump"
-				elseif component == "Tan Clump" then
-					component = "Tan Grass Clump"
-				elseif component == "Sat Green Clump" then --??? no such grass?
-					component = "Light Green Grass Clump"
-				end
+				if type(component) == "string" then
 
-				if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
+					local items = UFI.instance:FilterGenerics(component)
 
-					self:spawnItem(component, 1)
+					if type(items) == "table" then
+						self:spawnItem(items[1], 1)
+					else
+						self:spawnItem(items, 1)
+					end
 
 				end
 
@@ -173,27 +256,15 @@ function RecipeView:SpawnComponents(recipe)
 
 				for component, n in pairs(parts) do
 
-					if component == "Long Shaft" then
-						component = "Wood Shaft"
-					elseif component == "Crystal Shard" then
-						component = "Blue Crystal Shard"
-					elseif component == "Spear" then
-						component = "Wood Spear"
-					elseif component == "Wood Log" then
-						component = "Wood Log Pine"
-					elseif component == "Dark Green Clump" then
-						component = "Dark Green Grass Clump"
-					elseif component == "Light Green Clump" then
-						component = "Light Green Grass Clump"
-					elseif component == "Tan Clump" then
-						component = "Tan Grass Clump"
-					elseif component == "Sat Green Clump" then --??? no such grass?
-						component = "Light Green Grass Clump"
-					end
+						if type(component) == "string" then
 
-					if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
+						local items = UFI.instance:FilterGenerics(component)
 
-						self:spawnItem(component, n)
+						if type(items) == "table" then
+							self:spawnItem(items[1], n)
+						else
+							self:spawnItem(items, n)
+						end
 
 						break
 
@@ -214,7 +285,7 @@ function RecipeView:spawnItem(name, count)
 	local spawnLocation = Eternus.GameState.m_activeCamera:NKGetLocation() + (Eternus.GameState.m_activeCamera:ForwardVector():mul_scalar(3.0))
 
 	-- Forward the command to player
-	self.m_controller:SpawnCommand(name, count, spawnLocation)
+	self.controller:SpawnCommand(name, count, spawnLocation)
 
 	Eternus.CommandService:NKAddLocalText("Attempting to spawn " .. tostring(count) .. " of object " .. name .. "\n")
 
@@ -229,54 +300,35 @@ end
 -------------------------------------------------------------------------------
 function RecipeView:setVisible(show)
 
-	self.m_active = show
+	self.active = show
 
 	if show then
 
 		Eternus.InputSystem:NKPushInputContext(self.recipeContext)
 
-		self.m_controller.m_gameModeUI.m_crosshair:hide()
+		self.controller.m_gameModeUI.m_crosshair:hide()
 
 		Eternus.InputSystem:NKShowMouse()
 		Eternus.InputSystem:NKCenterMouse()
 
-		self.m_controller.m_inventoryToggleable = false
+		self.controller.m_inventoryToggleable = false
 
 	else
 
-		if self.m_currentWindow then
-			self.m_currentWindow:setProperty("HighlightImageColours", RecipeView.ALPHA_INVISIBLE)
-			self.m_tooltip:hide()
-			self.m_currentWindow = nil
+		if self.currentWindow then
+			self.currentWindow:setProperty("HighlightImageColours", RecipeView.ALPHA_INVISIBLE)
+			self.tooltip:hide()
+			self.currentWindow = nil
 		end
 
 		Eternus.InputSystem:NKRemoveInputContext(self.recipeContext)
 
-		self.m_controller.m_gameModeUI.m_crosshair:show()
+		self.controller.m_gameModeUI.m_crosshair:show()
 
 		Eternus.InputSystem:NKHideMouse()
 
-		self.m_controller.m_inventoryToggleable = true
+		self.controller.m_inventoryToggleable = true
 
-	end
-
-end
--------------------------------------------------------------------------------
-function RecipeView:OnMouseEnterDragContainer(invSlot)
-	-- Enable the selection highlight
-	if invSlot then
-		invSlot:setProperty("HighlightImageColours", RecipeView.ALPHA_VISIBLE)
-		self.m_tooltip:show()
-		self.m_currentWindow = invSlot
-	end
-end
--------------------------------------------------------------------------------
-function RecipeView:OnMouseExitDragContainer(invSlot)
-	-- Disable the selection highlight
-	if invSlot then
-		invSlot:setProperty("HighlightImageColours", RecipeView.ALPHA_INVISIBLE)
-		self.m_tooltip:hide()
-		self.m_currentWindow = nil
 	end
 
 end
@@ -290,18 +342,6 @@ function RecipeView:OnTextChanged()
 		self:LayoutAllRecipes()
 		return
 	end
---[[
-	self.recipeScrollpane:destroyChild(self.recipesList)
-
-	self.recipesList = Windows:createWindow("VerticalLayoutContainer")
-
-	self.recipesList:setProperty("DistributeCapturedInputs", "true")
-	self.recipesList:setProperty("MouseInputPropagationEnabled", "true")
-
-	self.recipeScrollpane:addChild(self.recipesList)
-
-	self:LoadRecipes()
-]]
 
 	for i, recipe in pairs(self.recipes) do
 
@@ -357,6 +397,76 @@ function RecipeView:OnSearchboxDeactivated()
 
 end
 -------------------------------------------------------------------------------
+
+function RecipeView:AddTab(group)
+
+	--local name = group:ClassName()
+
+	table.insert(self.tabs, group)--TechTreeView.new(group)
+
+	local tabBacker = Windows:createWindow("TUGLook/TabBacker")
+
+	local tabButton = Windows:createWindow("TUGLook/ImageButton")
+
+	tabButton:setArea(CEGUI.UDim(0, 0), CEGUI.UDim(0, 0), CEGUI.UDim(1, 0), CEGUI.UDim(1, 0))
+
+	tabBacker:setArea(CEGUI.UDim(0, 0), CEGUI.UDim(0, 64 * (table.getn(self.tabs) - 1)), CEGUI.UDim(0, 64), CEGUI.UDim(0, 64))
+
+	tabBacker:setProperty("Rotation", "w:0.707107 x:0 y:0 z:-0.707107")
+
+	tabBacker:addChild(tabButton)
+
+	self.layout:addChild(tabBacker)
+
+	local animRight = Animations:instantiateAnimation(self.moveRight.animation)
+
+	animRight:setTargetWindow(tabBacker)
+
+	local animLeft = Animations:instantiateAnimation(self.moveLeft.animation)
+
+	animLeft:setTargetWindow(tabBacker)
+
+	tabButton:subscribeEvent("MouseEntersSurface", function(args)
+
+		if self.active then
+
+			animLeft:stop()
+
+			tabBacker:setXPosition(CEGUI.UDim(0, 0))
+
+			animRight:start()
+
+		end
+
+	end)
+
+	tabButton:subscribeEvent("MouseLeavesSurface", function(args)
+
+		if self.active then
+
+			animRight:stop()
+
+			tabBacker:setXPosition(CEGUI.UDim(0, 8))
+
+			animLeft:start()
+
+		end
+
+	end)
+
+	tabButton:subscribeEvent("MouseClick", function(args)
+
+		if self.active then
+
+			--switch tab
+
+		end
+
+	end)
+
+end
+
+-------------------------------------------------------------------------------
 function RecipeView:LayoutAllRecipes()
 
 	for i, recipe in pairs(self.recipes) do
@@ -399,29 +509,7 @@ function RecipeView:LoadRecipes()
 		if (CSys.m_recipes[i] ~= nil) then
 			for j, recipe in pairs(CSys.m_recipes[i]) do
 
-				--[[if self.text then
-
-					for result, n in pairs(recipe["m_results"]) do
-
-						if type(result) == "string" and UFI.instance.discoveredRecipes[result] and string.find(string.lower(result), string.lower(self.text)) then
-
-							recipesSorted[index] = recipe
-
-							index = index + 1
-
-							break
-
-						end
-
-					end
-
-				else]]
-
-					recipesSorted[index] = recipe
-
-					index = index + 1
-
-				--end
+				table.insert(recipesSorted, recipe)
 
 			end
 		end
@@ -451,464 +539,24 @@ function RecipeView:LoadRecipes()
 
 	end)
 
+	--local dataTypes = {}
+
 	for j, recipe in pairs(recipesSorted) do
+--[[
+		for m_type, data in pairs(recipe) do
 
-		local data = Windows:createWindow("HorizontalLayoutContainer")
-
-		data:setProperty("DistributeCapturedInputs", "true")
-		data:setProperty("MouseInputPropagationEnabled", "true")
-
-		data:setSize(CEGUI.USize(CEGUI.UDim(1,0), CEGUI.UDim(1,0)))
-
-		--[[
-		if (once) then
-
-			for k,l in pairs(recipe) do
-				NKPrint(k .. "\n")
-			end
-
-			once = false
+			dataTypes[m_type] = 1
 
 		end
-		]]
-
-		local craftButton = Windows:createWindow("TUGLook/Button")
-
-		craftButton:subscribeEvent("MouseClick", function(args)
-
-			if self.m_active then
-
-				if self.m_controller.m_dying or self.m_controller.m_actionLocked then
-					return
-				end
-
-				local eyePosition = self.m_controller:NKGetPosition() + vec3(0.0, self.m_controller.m_cameraHeight, 0.0)
-				local lookDirection = Eternus.GameState.m_activeCamera:ForwardVector()
-				local result = NKPhysics.RayCastCollect(eyePosition, lookDirection, self.m_controller:GetMaxReachDistance(), {self.m_controller})
-
-				local tracePos
-				if result then
-					tracePos = result.point
-				else
-					tracePos = eyePosition
-					tracePos = tracePos + (lookDirection:mul_scalar(2.5))
-				end
-
-				UFI.instance:RaiseServerEvent("ServerEvent_CraftRecipe", {at = tracePos, recipe = recipe:GetRecipeName(), player = self.m_controller.object})
-
-			end
-
-		end)
-
-		craftButton:setText("Craft")
-
-		craftButton:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
-
-		craftButton:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-		data:addChild(craftButton)
-
-		for result, n in pairs(recipe["m_results"]) do
-
-			if type(result) == "string" then
-
-				name = result
-
-				--NKPrint("Recipe: " .. result .. "\n")
-
-				local frame = Windows:createWindow("TUGLook/Frame")
-
-				frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
-
-				frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-				self:SlotHelper(frame, result, n, recipe)
-
-				data:addChild(frame)
-
-			end
-
-		end
-
-		local label = Windows:createWindow("TUGLook/Frame")
-
-		label:setSize(CEGUI.USize(CEGUI.UDim(0, 8), CEGUI.UDim(0, 70)))
-
-		label:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-		data:addChild(label)
-
-		if recipe["m_craftingStations"] then
-
-			local interchangeables = Windows:createWindow("HorizontalLayoutContainer")
-
-			interchangeables:setProperty("DistributeCapturedInputs", "true")
-			interchangeables:setProperty("MouseInputPropagationEnabled", "true")
-
-			local num = 0.0
-
-			local frame = Windows:createWindow("TUGLook/Frame")
-
-			for station in pairs(recipe["m_craftingStations"]) do
-
-				num = num + 1
-
-			end
-
-			for station in pairs(recipe["m_craftingStations"]) do
-
-				if type(station) == "string" then
-
-					--NKPrint("Station: " .. station .. "\n")
-
-					self:SlotHelper(interchangeables, station)
-
-				end
-
-			end
-
-			frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70 * num), CEGUI.UDim(0, 70)))
-
-			frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-			frame:addChild(interchangeables)
-
-			data:addChild(frame)
-
-			CEGUI.toHorizontalLayoutContainer(interchangeables):layout()
-
-		else
-
-			local invItemContainer = Windows:createWindow("DefaultWindow")
-			invItemContainer:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
-			invItemContainer:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-			data:addChild(invItemContainer)
-
-		end
-
-		if recipe["m_craftingTool"] then
-
-			local frame = Windows:createWindow("TUGLook/Frame")
-
-			tier = recipe["m_craftingTool"]["tier"]
-
-			tool = recipe["m_craftingTool"]["category"]
-
-			prefix = {}
-
-			prefix[0] = "Crude"
-			prefix[1] = "Crude"
-			prefix[2] = "Crude"
-			prefix[3] = "Bronze"
-			prefix[4] = "Iron"
-
-			--NKPrint("Tier: " .. tier .. "\n")
-
-			if tool == "Knife" then
-				tool = prefix[tier] .. " Knife"
-			elseif tool == "Hammer" then
-				tool = prefix[tier] .. " Hammer"
-			elseif tool == "Axe" then
-				tool = prefix[tier] .. " Axe"
-			elseif tool == "Mallet" then
-				tier = math.max(tier, 3)
-				tool = "Wooden Mallet"
-			elseif tool == "Shears" then
-				tier = math.max(tier, 3)
-				tool = prefix[tier] .. " Shears"
-			end
-
-			if type(tool) == "string" then
-
-				--NKPrint("Tool: " .. tool .. "\n")
-
-				local frame = Windows:createWindow("TUGLook/Frame")
-
-				frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
-
-				frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-				self:SlotHelper(frame, tool)
-
-				data:addChild(frame)
-
-			end
-
-		else
-
-			local invItemContainer = Windows:createWindow("DefaultWindow")
-			invItemContainer:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
-			invItemContainer:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-			data:addChild(invItemContainer)
-
-		end
-
-		local label = Windows:createWindow("TUGLook/Frame")
-
-		label:setSize(CEGUI.USize(CEGUI.UDim(0, 8), CEGUI.UDim(0, 70)))
-
-		label:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-		data:addChild(label)
-
-		if recipe["m_unconsumedComponents"] then
-
-			for category, parts in pairs(recipe["m_unconsumedComponents"]) do
-
-				local interchangeables = Windows:createWindow("HorizontalLayoutContainer")
-
-				interchangeables:setProperty("DistributeCapturedInputs", "true")
-				interchangeables:setProperty("MouseInputPropagationEnabled", "true")
-
-				local num = 0.0
-
-				local frame = Windows:createWindow("TUGLook/Frame")
-
-				for component, n in pairs(parts) do
-
-					num = num + 1
-
-				end
-
-				for component, n in pairs(parts) do
-
-					--NKPrint(component .. " unconsumed" .. "\n")
-
-					if component == "Crude Rock Head" then
-						component = "Round Rock"
-					end
-
-					if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
-
-						self:SlotHelper(interchangeables, component, n)
-
-					end
-
-				end
-
-				frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70 * num), CEGUI.UDim(0, 70)))
-
-				frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-				frame:addChild(interchangeables)
-
-				data:addChild(frame)
-
-				CEGUI.toHorizontalLayoutContainer(interchangeables):layout()
-
-			end
-
-			local label = Windows:createWindow("TUGLook/Frame")
-
-			label:setSize(CEGUI.USize(CEGUI.UDim(0, 8), CEGUI.UDim(0, 70)))
-
-			label:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-			data:addChild(label)
-
-		end
-
-		if (recipe["m_components"]) then
-
-			for category, parts in pairs(recipe["m_components"]) do
-
-				local interchangeables = Windows:createWindow("HorizontalLayoutContainer")
-
-				interchangeables:setProperty("DistributeCapturedInputs", "true")
-				interchangeables:setProperty("MouseInputPropagationEnabled", "true")
-
-				local num = 0
-
-				local frame = Windows:createWindow("TUGLook/Frame")
-
-				if recipe:InstanceOf(ModularRecipe) then
-
-					num = 1
-
-					local component = parts["default"]
-
-					if component == "Long Shaft" then
-						component = "Wood Shaft"
-						--NKPrint(" -> " .. component)
-					elseif component == "Crystal Shard" then
-						component = "Blue Crystal Shard"
-						--NKPrint(" -> " .. component)
-					elseif component == "Spear" then
-						component = "Wood Spear"
-						--NKPrint(" -> " .. component)
-					elseif component == "Wood Log" then
-						component = "Wood Log Pine"
-						--NKPrint(" -> " .. component)
-					elseif component == "Dark Green Clump" then
-						component = "Dark Green Grass Clump"
-						--NKPrint(" -> " .. component)
-					elseif component == "Light Green Clump" then
-						component = "Light Green Grass Clump"
-						--NKPrint(" -> " .. component)
-					elseif component == "Tan Clump" then
-						component = "Tan Grass Clump"
-						--NKPrint(" -> " .. component)
-					elseif component == "Sat Green Clump" then --??? no such grass?
-						component = "Light Green Grass Clump"
-						--NKPrint(" -> " .. component)
-					else
-						--NKPrint(component .. "\n")
-					end
-
-					if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
-
-						self:SlotHelper(interchangeables, component, n)
-
-					end
-
-				else
-
-					for component, n in pairs(parts) do
-
-						num = num + 1
-
-					end
-
-					for component, n in pairs(parts) do
-
-						if component == "Long Shaft" then
-							component = "Wood Shaft"
-							--NKPrint(" -> " .. component)
-						elseif component == "Crystal Shard" then
-							component = "Blue Crystal Shard"
-							--NKPrint(" -> " .. component)
-						elseif component == "Spear" then
-							component = "Wood Spear"
-							--NKPrint(" -> " .. component)
-						elseif component == "Wood Log" then
-							component = "Wood Log Pine"
-							--NKPrint(" -> " .. component)
-						elseif component == "Dark Green Clump" then
-							component = "Dark Green Grass Clump"
-							--NKPrint(" -> " .. component)
-						elseif component == "Light Green Clump" then
-							component = "Light Green Grass Clump"
-							--NKPrint(" -> " .. component)
-						elseif component == "Tan Clump" then
-							component = "Tan Grass Clump"
-							--NKPrint(" -> " .. component)
-						elseif component == "Sat Green Clump" then --??? no such grass?
-							component = "Light Green Grass Clump"
-							--NKPrint(" -> " .. component)
-						else
-							--NKPrint(component .. "\n")
-						end
-
-						if type(component) == "string" and component ~= "Long Shaft" and component ~= "Crystal Shard" and component ~= "Spear" then
-
-							self:SlotHelper(interchangeables, component, n)
-
-						end
-
-					end
-
-				end
-
-				frame:setSize(CEGUI.USize(CEGUI.UDim(0, 70 * num), CEGUI.UDim(0, 70)))
-
-				frame:setMargin(CEGUI.UBox(CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3), CEGUI.UDim(0, 3)))
-
-				frame:addChild(interchangeables)
-
-				data:addChild(frame)
-
-				CEGUI.toHorizontalLayoutContainer(interchangeables):layout()
-
-			end
-
-		end
-
-		table.insert(self.recipes, {data = data, name = name})
-
-		--self.recipesList:addChild(data)
-
-		CEGUI.toHorizontalLayoutContainer(data):layout()
+]]
+		table.insert(self.recipes, RecipeItemView.new(self, recipe))
 
 	end
+--[[
+	for m_type, one in pairs(dataTypes) do
 
-	--CEGUI.toVerticalLayoutContainer(self.recipesList):layout()
-
-end
-
-function RecipeView:SlotHelper(parent, item, n, recipe)
-
-	local invItemContainer = Windows:createWindow("DefaultWindow")
-	invItemContainer:setSize(CEGUI.USize(CEGUI.UDim(0, 70), CEGUI.UDim(0, 70)))
-
-	local invSlot = Windows:createWindow("TUGLook/InventorySlot", "InventorySlot")
-
-	invItemContainer:addChild(invSlot)
-
-	parent:addChild(invItemContainer)
-
-	itemSchematic = Eternus.GameObjectSystem:NKFindObjectSchematicByName(item)
-
-	if itemSchematic and itemSchematic~=nullSchematic and itemSchematic:NKGetIconName() then
-		invSlot:setProperty("ItemImage", "TUGIcons/" .. itemSchematic:NKGetIconName())
-	else
-		invSlot:setProperty("ItemImage", "TUGIcons/NoIcon")
-	end
-
-	if n and n > 1 then
-		invSlot:setProperty("StackCount", tostring(n))
-	else
-		invSlot:setProperty("StackCount", "")
-	end
-
-	invSlot:setTooltip(self.m_tooltip)
-	invSlot:setProperty("DraggingEnabled", "false")
-
-	local tooltipMessage = item
-
-	if n and n > 1 then
-		tooltipMessage = tooltipMessage .. " x " .. n
-	end
-
-	invSlot:setTooltipText(tooltipMessage)
-
-	invSlot:subscribeEvent("MouseEntersSurface", function( args )
-		if self.m_active then
-			self:OnMouseEnterDragContainer(invSlot)
-		end
-	end)
-
-	invSlot:subscribeEvent("MouseLeavesSurface", function( args )
-		if self.m_active then
-			self:OnMouseExitDragContainer(invSlot)
-		end
-	end)
-
-	if recipe ~= nil then
-
-		invSlot:subscribeEvent("MouseDoubleClick", function(args)
-
-			if self.m_active and self.cheatMode then
-
-				self:SpawnComponents(recipe)
-
-			end
-		end)
-
-	else
-
-		invSlot:subscribeEvent("MouseDoubleClick", function(args)
-
-			if self.m_active and self.cheatMode then
-
-				if n == nil then n = 1 end
-
-				self:spawnItem(item, n)
-
-			end
-		end)
+		NKPrint(m_type)
 
 	end
-
+]]
 end

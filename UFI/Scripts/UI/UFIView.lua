@@ -15,11 +15,12 @@ function UFIView:Constructor(layout, model)
 
 	self.showing = false
 
-	self.m_player = model
+	self.player = model
 
 	self.recipeView = self:GetChild("RecipeView")
 	self.recipeView:setVisible(false)
-	self.m_recipeView = RecipeView.new(self.recipeView, self.m_player)
+	self.m_recipeView = RecipeView.new(self.recipeView, self.player)
+
 end
 
 -------------------------------------------------------------------------------
