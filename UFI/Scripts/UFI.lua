@@ -738,17 +738,17 @@ function UFI:Initialize()
 
 	for archetype, schematics in pairs(self.archetypes) do
 
-		NKPrint(archetype .. " {")
+		--NKPrint(archetype .. " {")
 		ArchetypeData:write(archetype .. " {\n")
 
 		for i, schematic in pairs(schematics) do
 
-			NKPrint("\t" .. schematic)
+			--NKPrint("\t" .. schematic)
 			ArchetypeData:write("\t" .. schematic .. "\n")
 
 		end
 
-		NKPrint("}")
+		--NKPrint("}")
 		ArchetypeData:write("}\n")
 
 	end
@@ -757,21 +757,21 @@ function UFI:Initialize()
 
 	for category, tiers in pairs(self.tools) do
 
-		NKPrint(category .. " {")
+		--NKPrint(category .. " {")
 		ArchetypeData:write(category .. " {\n")
 
 		for tier, tools in pairs(tiers) do
 
 			for i, tool in pairs(tools) do
 
-				NKPrint("\t(" .. tier .. ") " .. tool)
+				--NKPrint("\t(" .. tier .. ") " .. tool)
 				ArchetypeData:write("\t(" .. tier .. ") " .. tool .. "\n")
 
 			end
 
 		end
 
-		NKPrint("}")
+		--NKPrint("}")
 		ArchetypeData:write("}\n")
 
 	end
