@@ -10,7 +10,7 @@ Manifest
 	MajorVersion = 1.11
 
 	# The minor version number.
-	MinorVersion = 0.0
+	MinorVersion = 0.1
 
 	# The file path to the script that is the entry point.
 	ScriptFile = "Scripts/UFI.lua"

@@ -537,6 +537,8 @@ function RecipeItemView:SlotHelper(parent, item, n, recipe)
 
 				if invSlot.counts then
 
+					if invSlot.counts[invSlot.iconIndex] == nil then invSlot.counts[invSlot.iconIndex] = 1 end
+
 					self.recipeView:spawnItem(invSlot.archetypes[invSlot.iconIndex].name, invSlot.counts[invSlot.iconIndex])
 
 				else
